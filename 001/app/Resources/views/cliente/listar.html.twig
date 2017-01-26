@@ -1,0 +1,13 @@
+{% extends 'default/index.html.twig' %}
+
+{% block body %}
+	<div class="encabezado">
+		<div style='width:{{ cliente.tabCliente[0] }}px'>Rut</div>
+		<div style='width:{{ cliente.tabCliente[1] }}px'>Nombre</div>
+		<div style='width:{{ cliente.tabCliente[2] }}px'>Dirección</div>
+		<div style='width:{{ cliente.tabCliente[3] }}px'>Comuna</div>
+		<div style='width:{{ cliente.tabCliente[4] }}px'>e-mail</div>
+	</div>
+	<div class="detalle">
+	</div>
+{% endblock %}

@@ -7,8 +7,6 @@ use Symfony\Component\HttpFoundation\Request;
 use MRF\ClientesBundle\Entity\cliente;
 use MRF\ClientesBundle\Form\clienteType;
 
-
-
 class ClientesController extends Controller
 {
     public function listAction()

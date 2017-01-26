@@ -13,9 +13,20 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        // replace this example code with whatever you need
+        /*
         return $this->render('login/login.html.twig', [
-            'cliente' => array('nombre' => $this->getParameter('app.cliente'), 'aplicacion' => $this->getParameter('app.nombre'))
+            'cliente' => array(
+                'nombre' => $this->getParameter('app.cliente'),
+                'aplicacion' => $this->getParameter('app.nombre')
+            )
+        ]);
+        */
+        return $this->render('cliente/listar.html.twig', [
+            'cliente' => array(
+                'nombre' => $this->getParameter('app.cliente'),
+                'aplicacion' => $this->getParameter('app.nombre'),
+                'tabCliente' => $this->getParameter('app.tabCliente'),
+            )
         ]);
     }
 }

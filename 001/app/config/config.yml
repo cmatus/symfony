@@ -9,6 +9,7 @@ parameters:
     locale: en
     app.cliente: "Gibson Innovations"
     app.nombre:  "Gestión"
+    app.tabCliente: [100, 200, 150, 80, 50]
 
 framework:
     #esi:             ~
