@@ -1,0 +1,7 @@
+mrf_clientes:
+    resource: "@MRFClientesBundle/Resources/config/routing.yml"
+    prefix:   /
+
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation

@@ -1,0 +1,46 @@
+{% extends 'layout.html.twig' %}
+
+
+{% block body %}
+    <h2>Clientes</h2>
+    
+    {% for flashMessage in app.session.flashbag.get('mensaje') %}
+        <div class="alert" role="alert">
+            <div class ="container">{{ flashMessage }}</div>
+        </div>
+    {% endfor %}
+    
+<table border="1">
+    <tr>
+        <td>Rut</td>
+        <td>Nombre</td>
+        <td>Apellido Paterno</td>
+        <td>Apellido Materno</td>
+        <td>Dirección</td>
+        <td>Email</td>
+        <td>Telefono</td>
+        <td>Acciones</td>
+        
+    </tr>
+    {% for cliente in clientes %}
+    <tr>
+        <td>{{cliente.rut}}</td>
+        <td>{{cliente.nombre}}</td>
+        <td>{{cliente.apellidoP}}</td>
+        <td>{{cliente.apellidoM}}</td>
+        <td>{{cliente.direccion}}</td>
+        <td>{{cliente.email}}</td>
+        <td>{{cliente.fono}}</td>
+        <td>
+            <a href="{{ path('mrf_clientes_view', {id: cliente.id}) }}">Ver</a>
+            <a href="{{ path('mrf_clientes_edit', {id: cliente.id}) }}">Editar</a>
+            <a href="">Editar</a>
+            
+            
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+<br />
+<button><a href="{{ path('mrf_clientes_add') }}"><b>Agregar Nuevo Cliente</b></a></button>
+{% endblock %}

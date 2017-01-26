@@ -1,0 +1,37 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+    {{ parent()}}
+    
+    <div>
+        <h2>{{ cliente.nombre }} {{ cliente.apellidoP }} {{ cliente.apellidoM }}</h2>
+        <br>
+        <dl>
+            <dt>{{ 'Rut: ' }}</dt>
+            <dd>
+                {{ cliente.rut }}
+            </dd>
+            <br>
+            <dt>{{ 'Direccion: ' }}</dt>
+            <dd>
+                {{ cliente.direccion }}
+            </dd>
+            <br>
+            <dt>{{ 'Email: ' }}</dt>
+            <dd>
+                {{ cliente.email }}
+            </dd>
+            <br>
+            <dt>{{ 'Telefono: ' }}</dt>
+            <dd>
+                {{ cliente.fono }}
+            </dd>
+            <br>
+        </dl>
+    </div>
+    <div >
+	    	
+			
+	    </div>
+<button><a href="{{ path('mrf_clientes_list') }}"><b>Volver</b></a></button>
+{% endblock %}

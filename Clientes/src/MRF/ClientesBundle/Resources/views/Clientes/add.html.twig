@@ -1,0 +1,48 @@
+{% extends 'layout.html.twig' %}
+
+
+{% block body %}
+    <h2>Nuevo Cliente</h2>
+    {{ form_start(form)}}
+    <div class="form_group">
+        {{ form_label(form.rut) }}
+        {{ form_widget(form.rut, {'attr' : {'placeholder' : 'Rut'}}) }}
+        <span class="text-danger">{{ form_errors(form.rut) }}</span>
+        </div>
+        <div class="form_group">
+        {{ form_label(form.nombre) }}
+        {{ form_widget(form.nombre, {'attr' : {'placeholder' : 'Nombre'}}) }}
+        <span class="text-danger">{{ form_errors(form.nombre) }}</span>
+        </div>
+        <div class="form_group">
+        {{ form_label(form.apellidoP) }}
+        {{ form_widget(form.apellidoP, {'attr' : {'placeholder' : 'Apellido Paterno'}}) }}
+        <span class="text-danger">{{ form_errors(form.apellidoP) }}</span>
+        </div>
+        <div class="form_group">
+        {{ form_label(form.apellidoM) }}
+        {{ form_widget(form.apellidoM, {'attr' : {'placeholder' : 'Apellido materno'}}) }}
+        <span class="text-danger">{{ form_errors(form.apellidoM) }}</span>
+        </div>
+        <div class="form_group">
+        {{ form_label(form.direccion) }}
+        {{ form_widget(form.direccion, {'attr' : {'placeholder' : 'Direccion'}}) }}
+        <span class="text-danger">{{ form_errors(form.direccion) }}</span>
+        </div>
+        <div class="form_group">
+        {{ form_label(form.email) }}
+        {{ form_widget(form.email, {'attr' : {'placeholder' : 'Email'}}) }}
+        <span class="text-danger">{{ form_errors(form.email) }}</span>
+        </div>
+        <div class="form_group">
+        {{ form_label(form.fono) }}
+        {{ form_widget(form.fono, {'attr' : {'placeholder' : 'Telefono'}}) }}
+        <span class="text-danger">{{ form_errors(form.rut) }}</span>
+        </div>
+        <p>
+            {{ form_widget(form.save, {'label' : 'Crear Cliente', 'attr' : { 'class': 'btn'}}) }}
+        </p>
+    
+    {{form_end(form)}}
+<button><a href="{{ path('mrf_clientes_list') }}"><b>Volver</b></a></button>
+{% endblock %}

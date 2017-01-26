@@ -1,0 +1,39 @@
+mrf_clientes_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: MRFClientesBundle:Default:index }
+
+mrf_clientes_list:
+    path:   /clientes/list
+    defaults: { _controller: MRFClientesBundle:Clientes:list }
+    
+mrf_clientes_add:
+    path:   /clientes/add
+    defaults: { _controller: MRFClientesBundle:Clientes:add }
+ 
+mrf_clientes_create:
+    path:   /clientes/create
+    defaults: { _controller: MRFClientesBundle:Clientes:create }
+    methods : POST
+    
+mrf_clientes_edit:
+    path:   /clientes/edit/{id}
+    defaults: { _controller: MRFClientesBundle:Clientes:edit }
+    
+mrf_clientes_update:
+    path:   /clientes/update/{id}
+    defaults: { _controller: MRFClientesBundle:Clientes:update }
+    methods: [POST, PUT]
+    
+mrf_clientes_view:
+    path: /clientes/view/{id}
+    defaults: { _controller: MRFClientesBundle:Clientes:view }
+    
+mrf_clientes_delete:
+    path: /clientes/delete/{id}
+    defaults: { _controller: MRFClientesBundle:Clientes:delete }
+    methods: [POST, DELETE]
+    
+mrf_clientes_erase:
+    path: /clientes/erase/{id}
+    defaults: {_controller: MRFClientesBundle:Clientes:erase}
+    methods: POST
