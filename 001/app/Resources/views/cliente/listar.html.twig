@@ -1,13 +1,25 @@
 {% extends 'default/index.html.twig' %}
 
 {% block body %}
-	<div class="encabezado">
-		<div style='width:{{ cliente.tabCliente[0] }}px'>Rut</div>
-		<div style='width:{{ cliente.tabCliente[1] }}px'>Nombre</div>
-		<div style='width:{{ cliente.tabCliente[2] }}px'>Dirección</div>
-		<div style='width:{{ cliente.tabCliente[3] }}px'>Comuna</div>
-		<div style='width:{{ cliente.tabCliente[4] }}px'>e-mail</div>
-	</div>
-	<div class="detalle">
+	<h1>Listado de Clientes</h1>
+	<div class="tabla">
+		<div class="encabezado">
+			<div style='width:{{ cliente.tabCliente[0] }}px'>Rut</div>
+			<div style='width:{{ cliente.tabCliente[1] }}px'>Nombre</div>
+			<div style='width:{{ cliente.tabCliente[2] }}px'>Dirección</div>
+			<div style='width:{{ cliente.tabCliente[3] }}px'>Comuna</div>
+			<div style='width:100px'>&nbsp;</div>
+		</div>
+		<div class="detalle">
+			{% for cli in cliente.datos %}
+				<div class="item">
+					<div style='width:{{ cliente.tabCliente[0] }}px'>{{ cli.rut }}</div>
+					<div style='width:{{ cliente.tabCliente[1] }}px'>{{ cli.nombre }}</div>
+					<div style='width:{{ cliente.tabCliente[2] }}px'>{{ cli.direccion }}</div>
+					<div style='width:{{ cliente.tabCliente[3] }}px'>{{ cli.comuna }}</div>
+					<div style="width:100px;text-align:center"><a href="{{ path('clienteEditar', {rut: cli.rut}) }}">Editar</a>&nbsp;&nbsp;<a href="{{ path('clienteEditar', {rut: cli.rut}) }}">Eliminar</a></div>
+				</div>
+			{% endfor %}
+		</div>
 	</div>
 {% endblock %}

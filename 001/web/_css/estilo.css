@@ -20,19 +20,12 @@ form
 	padding: 20px;
 	margin: 10px;
 	background-color: silver;
-	display: flex;
-	flex-wrap: wrap;
+	display: inline-block;
 }
 
-form.login
+form.login label
 {
-	align-items: flex-start;
-	width: 250px;
-}
-
-form.login *
-{
-	width: 100%;
+	display: block;
 }
 
 form.login input
@@ -46,7 +39,49 @@ form.login input[type="text"], form.login input[type="password"]
 	margin-bottom: 15px;
 }
 
-.encabezado div
+.tabla
+{
+	margin: 10px;
+}
+
+.tabla .encabezado div
 {
 	display: inline-block;
+	padding: 5px;
+	text-align: center;
+	font-weight: 600;
+	background-color: blue;
+	color: white;
+	float: left;
+}
+
+.tabla .encabezado div:first-child
+{
+	clear: both;
+}
+
+.tabla .detalle .item
+{
+	clear: both;
+	cursor: pointer;
+}
+
+.tabla .detalle .item:nth-child(even) div {background: #CCC}
+.tabla .detalle .item:nth-child(odd) div {background: #EEE}
+
+.tabla .detalle .item:hover div {
+	background-color: #000000;
+	color: white;
+}
+
+.tabla .detalle .item div
+{
+	display: inline-block;
+	padding: 5px;
+	float: left;
+}
+
+.tabla .encabezado div:not(:last-child), .tabla .detalle .item div:not(:last-child)
+{
+	border-right: 1px solid #959595;
 }
