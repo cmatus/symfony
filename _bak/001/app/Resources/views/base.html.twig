@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}{% endblock %}</title>
+        {% block stylesheets %}{% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('_img/gibson.ico') }}" />
+        <link rel="stylesheet"  href="{{ asset('_css/estilo.css') }}" type="text/css" />
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+    </body>
+</html>

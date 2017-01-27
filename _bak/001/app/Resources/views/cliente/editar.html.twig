@@ -1,0 +1,28 @@
+{% extends 'default/index.html.twig' %}
+
+{% block body %}
+    <h1>Cliente</h1>
+	{{ form_start(form) }}
+		{{ form_errors(form) }}
+		<div>
+			{{ form_label(form.rut, 'Rut') }}
+			{{ form_errors(form.rut) }}
+			{{ form_widget(form.rut) }}
+		</div>
+		<div>
+			{{ form_label(form.nombre, 'Nombre') }}
+			{{ form_errors(form.nombre) }}
+			{{ form_widget(form.nombre) }}
+		</div>
+		<div>
+			{{ form_label(form.direccion, 'Dirección') }}
+			{{ form_errors(form.direccion) }}
+			{{ form_widget(form.direccion) }}
+		</div>
+		<div>
+			{{ form_label(form.comuna, 'Comuna') }}
+			{{ form_errors(form.comuna) }}
+			{{ form_widget(form.comuna) }}
+		</div>
+	{{ form_end(form) }}
+{% endblock %}

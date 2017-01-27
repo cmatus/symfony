@@ -1,0 +1,87 @@
+*
+{
+	padding: 0px;
+	margin: 0px;
+	font-family: verdana;
+	font-size: 0.95em;
+}
+
+h1
+{
+	background-color: black;
+	color: white;
+	font-size: 1.5em;
+	font-weight: 500;
+	padding: 5px;
+}
+
+form
+{
+	padding: 20px;
+	margin: 10px;
+	background-color: silver;
+}
+
+form input, form button
+{
+	padding: 5px;
+	border: 1px solid #959595;
+}
+
+form input[type="text"], form input[type="password"]
+{
+	margin-bottom: 15px;
+}
+
+label
+{
+	display: block;
+	clear: both;
+}
+
+.tabla
+{
+	margin: 10px;
+}
+
+.tabla .encabezado div
+{
+	display: inline-block;
+	padding: 5px;
+	text-align: center;
+	font-weight: 600;
+	background-color: blue;
+	color: white;
+	float: left;
+}
+
+.tabla .encabezado div:first-child
+{
+	clear: both;
+}
+
+.tabla .detalle .item
+{
+	clear: both;
+	cursor: pointer;
+}
+
+.tabla .detalle .item:nth-child(even) div {background: #CCC}
+.tabla .detalle .item:nth-child(odd) div {background: #EEE}
+
+.tabla .detalle .item:hover div {
+	background-color: #000000;
+	color: white;
+}
+
+.tabla .detalle .item div
+{
+	display: inline-block;
+	padding: 5px;
+	float: left;
+}
+
+.tabla .encabezado div:not(:last-child), .tabla .detalle .item div:not(:last-child)
+{
+	border-right: 1px solid #959595;
+}

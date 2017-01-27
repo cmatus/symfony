@@ -1,0 +1,78 @@
+*
+{
+	margin: 0px;
+	/*padding: 0px;*/
+	box-sizing: border-box;
+	font-family: verdana;
+	font-size: 0.95em;
+	color: #444444;
+}
+
+body
+{
+	display: flex;
+	justify-content: center;
+}
+
+a
+{
+	color: blue;
+}
+
+h1
+{
+	font-size: 1.7em;
+	margin-bottom: 1em;
+	color: #000000;
+}
+
+h2
+{
+	font-size: 1.2em;
+	margin-bottom: 1em;
+}
+
+p
+{
+	text-align: justify;
+	margin-bottom: 1em;
+}
+
+ul, ol
+{
+	margin-bottom: 1em;
+}
+
+ol li
+{
+	margin-bottom: 1em;	
+}
+
+span
+{
+	color: green;
+}
+
+.articulo
+{
+	width: 80%;
+}
+
+.code, .consola
+{
+	font-family: courier new;
+	padding: 10px;
+	margin-bottom: 1em;
+}
+
+.code
+{
+	background-color: #dddddd;
+	color: black;
+}
+
+.consola
+{
+	background-color: #000000;
+	color: #FFFFFF;
+}

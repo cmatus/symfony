@@ -7,9 +7,6 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
-    app.cliente: "Gibson Innovations"
-    app.nombre:  "Gestión"
-    app.tabCliente: [90, 200, 200, 200]
 
 framework:
     #esi:             ~

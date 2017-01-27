@@ -20,23 +20,23 @@ form
 	padding: 20px;
 	margin: 10px;
 	background-color: silver;
-	display: inline-block;
 }
 
-form.login label
-{
-	display: block;
-}
-
-form.login input
+form input, form button
 {
 	padding: 5px;
 	border: 1px solid #959595;
 }
 
-form.login input[type="text"], form.login input[type="password"]
+form input[type="text"], form input[type="password"]
 {
 	margin-bottom: 15px;
+}
+
+label
+{
+	display: block;
+	clear: both;
 }
 
 .tabla

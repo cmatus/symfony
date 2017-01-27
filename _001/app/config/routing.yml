@@ -1,0 +1,11 @@
+gibson_app:
+    resource: "@GibsonAppBundle/Resources/config/routing.yml"
+    prefix:   /
+
+gibson_cliente:
+    resource: "@GibsonClienteBundle/Resources/config/routing.yml"
+    prefix:   /
+
+app:
+    resource: "@Gibson/AppBundle/Controller/"
+    type:     annotation

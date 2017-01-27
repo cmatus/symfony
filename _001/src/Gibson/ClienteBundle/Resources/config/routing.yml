@@ -1,0 +1,3 @@
+gibson_cliente_homepage:
+    path:     /
+    defaults: { _controller: GibsonClienteBundle:Default:index }

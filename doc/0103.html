@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title></title>
+		<link rel="stylesheet" href="_css/estilos.css">
+	</head>
+	<body>
+		<div class="articulo">
+			<h1>Introducción a las nuevas funcionalidades de PHP</h1>
+			<p>Symfony 2.8 utiliza todas las funcionalidades avanzadas de PHP introducidas desde la versión 5.3. De todas ellas, las más relevantes para los programadores Symfony son las funciones anónimas y los namespaces, que se explican en las siguientes secciones.</p>
+			<h2>Funciones anónimas</h2>
+			<p>Las funciones anónimas, también conocidas como closures, son funciones sin nombre que permiten crear callbacks de manera sencilla. El código fuente de Symfony hace un uso extensivo de estas funciones, como por ejemplo puedes ver en la clase <span>Symfony/Component/Console/Application.php</span>:</p>
+			<div class="code">
+				public function renderException($e, $output)<br>
+				{<br>
+				&emsp;$strlen = function ($string) {<br>
+				&emsp;&emsp;if (!function_exists('mb_strlen')) {<br>
+				&emsp;&emsp;&emsp;return strlen($string);<br>
+				&emsp;&emsp;}<br>
+				&emsp;&emsp;if (false === $encoding = mb_detect_encoding($string)) {<br>
+				&emsp;&emsp;&emsp;return strlen($string);<br>
+				&emsp;&emsp;}<br>
+				&emsp;&emsp;return mb_strlen($string, $encoding);<br>
+				&emsp;};<br>
+				&emsp;// ...<br>
+				&emsp;$len = $strlen($title);<br>
+				}
+			</div>
+			<p>La variable <span>$strlen</span> almacena una función anónima que calcula la longitud de una cadena de texto. Esta función se adapta a las características del sistema en el que se ejecuta, utilizando la función <span>mb_strlen()</span> o <span>strlen()</span> para determinar la longitud de la cadena. Antes de PHP 5.3, el código anterior debía escribirse de la siguiente manera:</p>
+			<div class="code">
+				public function mi_strlen ($string)<br>
+				{<br>
+				&emsp;if (!function_exists('mb_strlen')) {<br>
+				&emsp;&emsp;return strlen($string);<br>
+				&emsp;}<br>
+				&emsp;if (false === $encoding = mb_detect_encoding($string)) {<br>
+				&emsp;&emsp;return strlen($string);<br>
+				&emsp;}<br>
+				&emsp;return mb_strlen($string, $encoding);<br>
+				}<br>
+				<br>
+				public function renderException($e, $output)<br>
+				{<br>
+				&emsp;// ...<br>
+				&emsp;$len = mi_strlen($title);<br>
+				}
+			</div>
+			<h2>Namespaces</h2>
+			<p>Según la Wikipedia, un namespace o espacio de nombres (<a href="https://es.wikipedia.org/wiki/Espacio_de_nombres" target="_blank">https://es.wikipedia.org/wiki/Espacio_de_nombres</a>) es "un contenedor abstracto que agrupa de forma lógica varios símbolos e identificadores". En la práctica, los namespaces se utilizan para estructurar mejor el código de la aplicación. Todas las clases de Symfony utilizan los namespaces y por tanto, es imprescindible entenderlos bien antes de programar una aplicación Symfony.</p>
+			<p>Antes de que existieran los namespaces, las aplicaciones debían ser cuidadosas al elegir el nombre de sus clases, ya que dos o más clases diferentes no podían tener el mismo nombre. Si la aplicación contenía cientos de clases, como es habitual en los frameworks, el resultado eran clases con nombres larguísimos para evitar colisiones.</p>
+			<p>Gracias a los namespaces dos o más clases de una misma aplicación pueden tener el mismo nombre. El único requisito es que sus namespaces sean diferentes, de forma que la aplicación sepa en todo momento cuál se está utilizando.</p>
+			<p>Los siguientes ejemplos utilizan clases reales de la aplicación que se desarrolla en los próximos capítulos. Por el momento no trates de entender por qué las clases se llaman de esa manera y se encuentran en esos directorios.</p>
+			<p>Imagina que dispones de una clase PHP llamada <span>Oferta.php</span> que se encuentra en el directorio <span>src/AppBundle/Entity/</span> de tu proyecto. Para que Symfony pueda encontrar esa clase, es obligatorio que incluya el siguiente namespace al principio del todo:</p>
+			<div class="code">
+				<?php<br>
+				namespace AppBundle\Entity;<br>
+				// ...<br>
+			</div>
+			<p>En las aplicaciones Symfony, el namespace coincide con la ruta del archivo a partir del directorio <span>src/</span> del proyecto. El namespace utiliza la barra invertida (\) como separador, sin importar el sistema operativo que utilices. Además, el namespace nunca incluye el propio nombre de la clase.</p>
+			<p>Imagina ahora que dispones de otra clase llamada <span>DefaultController.php</span> que se encuentra en el directorio <span>src/AppBundle/Controller/</span> del proyecto. Para utilizar la anterior clase <span>Oferta.php</span> dentro de <span>DefaultController.php</span> debes escribir lo siguiente:</p>
+			<div class="code">
+				<?php<br>
+				namespace AppBundle\Controller;<br>
+				class DefaultController {<br>
+				&emsp;$oferta = new \AppBundle\Entity\Oferta();<br>
+				&emsp;// ...<br>
+				}
+			</div>
+			<p>Como las clases de PHP ya no tienen nombres únicos, debes escribir el namespace completo cuando quieres hacer referencia a una clase. Si utilizas muchas veces una clase esto es muy aburrido, así que puedes importarla una sola vez con la instrucción <span>use</span>:</p>
+			<div class="code">
+				<?php<br>
+				namespace AppBundle\Controller;<br><br>
+				// no añadas al sufijo '.php' al importar una clase con 'use'<br>
+				use AppBundle\Entity\Oferta;<br><br>
+				class DefaultController {<br>
+				&emsp;$oferta = new Oferta();<br>
+				&emsp;// ...<br>
+				}
+			</div>
+			<p>Las instrucciones <span>use</span> le dicen a PHP las clases que vas a usar en tu código para que así no tengas que importarlas cada vez. En el ejemplo anterior se importa una sola clase, pero si vas a utilizar muchas clases definidas bajo el mismo namespace, también puedes importar el namespace común a todas ellas. Por ejemplo, si dentro de <span>AppBundle\Entity</span> defines muchas clases, puedes hacer lo siguiente:</p>
+			<div class="code">
+				<?php<br>
+				namespace AppBundle\Controller;<br><br>
+				use AppBundle\Entity;<br><br>
+				class DefaultController {<br>
+				&emsp;$oferta = new \Entity\Oferta();<br>
+				&emsp;// ...<br>
+				}
+			</div>
+			<p>En las aplicaciones Symfony lo habitual es importar todas las clases individualmente, incluso cuando se encuentran en el mismo directorio. Por eso en la mayoría de clases de Symfony verás al principio muchas instrucciones <span>use</span> para importar las clases utilizadas.</p>
+			<p>Una ventaja adicional de los namespaces es que se puede modificar el nombre de la clase al importarla. Para ello, indica el nuevo nombre con la palabra reservada <span>as</span> en la instrucción <span>use</span>:</p>
+			<div class="code">
+				<?php<br>
+				namespace AppBundle\Controller;<br><br>
+				use AppBundle\Entity\Oferta as Offer;<br><br>
+				class DefaultController {<br>
+				&emsp;$oferta = new Offer();<br>
+				&emsp;// ...<br>
+				}
+			</div>
+			<p>Por último, tus clases también pueden tener el mismo nombre que las clases nativas de PHP. En estos casos, para referirse a la clase nativa de PHP, añade una barra \ por delante:</p>
+			<div class="code">
+				<?php<br>
+				use AppBundle\Utils\DateTime;
+				// ...<br><br>
+				$fecha = new DateTime(); // Nuestra propia clase<br>
+				$fecha = new \DateTime(); // La clase nativa de PHP<br>
+			</div>
+			<h2>Anotaciones</h2>
+			<p>Las anotaciones son un mecanismo muy utilizado en lenguajes de programación como Java. Aunque PHP todavía no soporta anotaciones (al menos hasta la versión PHP 7.0), las aplicaciones Symfony pueden hacer uso de ellas gracias a una librería desarrollada por un proyecto externo llamado Doctrine.</p>
+			<p>Técnicamente las anotaciones no son más que comentarios incluidos en el propio código fuente de la aplicación. A diferencia de los comentarios normales, las anotaciones no sólo no se ignoran, sino que se tienen en cuenta y pueden influir en la ejecución del código.</p>
+			<p>El siguiente código muestra un ejemplo sencillo de cómo se utilizan las anotaciones en Symfony:</p>
+			<div class="code">
+			use Doctrine\ORM\Mapping as ORM;<br>
+			use Symfony\Component\Validator\Constraints as Assert;<br><br>
+			// ...<br><br>
+			/**<br>
+			* @ORM\Column(type="string")<br>
+			* @Assert\NotBlank()<br>
+			*/<br>
+			protected $nombre;
+			</div>
+			<p>Justo encima de la declaración de la propiedad <span>$nombre</span> se añade un comentario de varias líneas. La única diferencia entre un comentario normal y un comentario que incluye anotaciones, es que la apertura del comentario debe tener dos asteriscos (<span>/**</span>) en vez de uno solo (<span>/*</span>). Si sólo utilizas un asterisco, la aplicación ignorará completamente las anotaciones y perderás mucho tiempo tratando de descubrir por qué no funcionan como deberían.</p>
+			<p>En este ejemplo, la anotación <span>@ORM\Column(type="string")</span> define el tipo de columna de base de datos en la que se guarda este valor. Y la anotación <span>@Assert\NotBlank()</span> asegura que esta propiedad no se pueda dejar vacía.</p>
+			<p>Si nunca has utilizado anotaciones seguramente te estás preguntando por qué se define esta información tan importante en un simple comentario, en vez de incluirla en el propio código de la aplicación. La gran ventaja de las anotaciones es que permiten modificar el comportamiento de la aplicación sin tener que recurrir a archivos de configuración y sin tener que añadir más líneas de código. Se trata por tanto de conseguir un código más conciso y fácil de mantener.</p>
+			<p>Symfony recomienda utilizar anotaciones en sus aplicaciones siempre que sea posible, pero no es obligatorio hacerlo. Si por cualquier motivo no te gustan las anotaciones, puedes definir la configuración usando otros formatos (XML, YAML, PHP). Symfony nunca te va a obligar a usar un formato determinado.</p>
+			<h2>Introducción a YAML</h2>
+			<p>Los archivos de configuración de Symfony se pueden escribir en PHP, en XML o en YAML. Desde el punto de vista del rendimiento no hay ninguna diferencia entre los tres, ya que todos ellos se transforman a PHP antes de ejecutar la aplicación.</p>
+			<p>El formato PHP es la forma más complicada de escribir la configuración de la aplicación, pero es la que más flexibilidad proporciona. El formato XML es el más largo de escribir, pero su contenido se puede validar antes de ejecutar la aplicación gracias a los esquemas definidos con XSD.</p>
+			<p>YAML es probablemente el formato más equilibrado, ya que es mucho más conciso que XML y es bastante flexible. Su gran desventaja es que no se puede validar automáticamente, por lo que la mayoría de los errores sólo puedes descubrirlos al ejecutar la aplicación.</p>
+			<p>Los archivos de configuración de la aplicación desarrollada en este libro utilizan el formato YAML. Si no conoces YAML, a continuación se explica resumidamente la sintaxis imprescindible para programadores Symfony.</p>
+			<h2>Sintaxis</h2>
+			<p>Los archivos de configuración de Symfony sólo utilizan una parte muy pequeña de todo el estándar YAML (<a href="http://yaml.org" target="_blank">http://yaml.org</a>) , por lo que es muy sencillo aprender su sintaxis. Los cinco conceptos básicos que debes de conocer son los siguientes:</p>
+			<ol>
+				<li>Nunca incluyas un tabulador en un archivo YAML. Para indentar la información, utiliza siempre la barra espaciadora.</li>
+				<li>La información se indica mediante pares <span>clave: valor</span>. Si la <span>clave</span> o el <span>valor</span> tienen espacios en blanco, se encierran con comillas simples o dobles indistintamente.</li>
+				<li>La jerarquía de la información se establece escribiendo cuatro espacios en blanco por delante del par <span>clave: valor</span></li>
+				<li>Los arrays normales se indican con los corchetes [ y ] y los arrays asociativos con las llaves <span>{</span> y <span>}</span>.</li>
+				<li>Los comentarios se indican prefijando el carácter # por delante de cada una de sus líneas.</li>
+			</ol>
+			<p>Observa las primeras líneas del archivo de configuración de la seguridad de Symfony (<span>app/config/security.yml</span>):</p>
+			<div class="code">
+				security:<br>
+				&emsp;&emsp;encoders:<br>
+				&emsp;&emsp;&emsp;&emsp;Symfony\Component\Security\Core\User\User: plaintext<br><br>
+				&emsp;&emsp;role_hierarchy:<br>
+				&emsp;&emsp;&emsp;&emsp;ROLE_ADMIN: ROLE_USER<br>
+				&emsp;&emsp;&emsp;&emsp;ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]<br><br>
+				&emsp;&emsp;providers:<br>
+				&emsp;&emsp;&emsp;&emsp;in_memory:<br>
+				&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;users:<br>
+				&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;user: { password: userpass, roles: [ 'ROLE_USER' ] }<br>
+				&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
+			</div>
+			<p>La palabra <span>security</span> de la primera línea es la clave principal de este archivo YAML, a partir de la cual se definen el resto de claves y valores. Observa cómo las claves de segundo nivel (<span>encoders</span>, <span>role_hierarchy</span> y <span>providers</span>) van precedidas por cuatro espacios en blanco. Esta es la forma de establecer la jerarquía en un archivo YAML.</p>
+			<p>Dentro de la clave <span>role_hierarchy</span>, el array de valores de la clave <span>ROLE_SUPER_ADMIN</span> se define utilizando la notación tradicional de corchetes:</p>
+			<div class="code">
+				security:<br>
+				&emsp;&emsp;role_hierarchy:<br>
+				&emsp;&emsp;&emsp;&emsp;ROLE_ADMIN: ROLE_USER<br>
+				&emsp;&emsp;&emsp;&emsp;ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+			</div>
+			<p>Si lo prefieres, existe una notación alternativa para los arrays que consiste en prefijar con un guión medio <span>-</span> todos los valores del array:
+			<div class="code">
+				security:<br>
+				&emsp;&emsp;role_hierarchy:<br>
+				&emsp;&emsp;&emsp;&emsp;ROLE_ADMIN: ROLE_USER<br>
+				&emsp;&emsp;&emsp;&emsp;ROLE_SUPER_ADMIN:<br>
+				&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;- ROLE_USER<br>
+				&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;- ROLE_ADMIN<br>
+				&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;- ROLE_ALLOWED_TO_SWITCH
+			</div>
+			<p>Los arrays (tanto normales como asociativos) se pueden mezclar entre sí y con otros valores normales, como por ejemplo en las siguientes líneas del archivo anterior:</p>
+			<div class="code">
+				providers:<br>
+				&emsp;&emsp;in_memory:<br>
+				&emsp;&emsp;&emsp;&emsp;users:<br>
+				&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;user: { password: userpass, roles: ['ROLE_USER'] }<br>
+				&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;admin: { password: adminpass, roles: ['ROLE_ADMIN'] }
+			</div>
+			<p>Al procesar el archivo YAML, Symfony convierte las líneas anteriores en el siguiente array PHP:</p>
+			<div class="code">
+				array(<br>
+				&emsp;'security' => array(<br>
+				&emsp;&emsp;'providers' => array(<br>
+				&emsp;&emsp;&emsp;'in_memory' => array(<br>
+				&emsp;&emsp;&emsp;&emsp;'users' => array(<br>
+				&emsp;&emsp;&emsp;&emsp;&emsp;'user' => array(<br>
+				&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;'password' => 'userpass',<br>
+				&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;'roles' => array('ROLE_USER')<br>
+				&emsp;&emsp;&emsp;&emsp;&emsp;),<br>
+				&emsp;&emsp;&emsp;&emsp;&emsp;'admin' => array(<br>
+				&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;'password' => 'adminpass',<br>
+				&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;'roles' => array('ROLE_ADMIN')<br>
+				&emsp;&emsp;&emsp;&emsp;&emsp;)<br>
+				&emsp;&emsp;&emsp;&emsp;)<br>
+				&emsp;&emsp;&emsp;)<br>
+				&emsp;&emsp;)<br>
+				&emsp;)<br>
+				)
+			</div>
+		</div>
+	</body>
+</html>

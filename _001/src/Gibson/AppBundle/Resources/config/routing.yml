@@ -1,0 +1,3 @@
+gibson_app_homepage:
+    path:     /
+    defaults: { _controller: GibsonAppBundle:Default:index }

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title></title>
+		<link rel="stylesheet" href="_css/estilos.css">
+	</head>
+	<body>
+		<div class="articulo">
+			<h1>Instalando y configurando Symfony</h1>
+			<p>El framework Symfony requiere para su funcionamiento de varias librerías PHP. Algunas de estas librerías han sido creadas por el propio proyecto Symfony y se llaman Componentes Symfony. Otras son librerías desarrolladas por terceros, como Monolog (para gestionar los mensaje de log), Doctrine (para gestionar las bases de datos), etc.</p>
+			<p>En la práctica, una aplicación Symfony se compone de dos elementos principales: tu propio código fuente (normalmente se guarda en <span>src/</span>) y el código de todas esas librerías que necesita Symfony (normalmente se guardan en <span>vendor/</span>). Así que "instalar Symfony" consiste en crear una aplicación PHP vacía e instalar las librerías necesarias dentro del directorio <span>vendor/</span>.</p>
+			<h2>El instalador de Symfony</h2>
+			<p>El proyecto Symfony ha publicado una herramienta llamada Instalador de Symfony que simplifica al máximo la creación de nuevas aplicaciones Symfony. Se trata de una pequeña aplicación creada con PHP 5.4 y que solamente hay que instalar una vez en tu ordenador.</p>
+			<div class="consola">
+				# Si utilizas Linux o macOS, ejecuta los siguientes comandos:<br>
+				$ sudo mkdir -p /usr/local/bin<br>
+				$ sudo curl -LsS https://symfony.com/installer -o /usr/local/bin/symfony<br>
+				$ sudo chmod a+x /usr/local/bin/symfony<br>
+				<br>
+				# Si usas Windows, ejecuta el siguiente comando:<br>
+				c:\> php -r "readfile('https://symfony.com/installer');" > symfony
+			</div>
+			<p>En Linux y macOS, los comandos anteriores crean un comando global llamado <span>symfony</span>. En Windows, mueve el archivo <span>symfony</span> a algún directorio que se encuentre dentro de la variable de entorno <span>PATH</span> para poder ejecutarlo sin tener que indicar su ruta completa.</p>
+			<h2>Creando la aplicación Symfony</h2>
+			<p>Una vez disponible el instalador de Symfony, puedes crear aplicaciones Symfony ejecutando un solo comando sencillo:</p>
+			<div class="consola">
+				# Si utilizas Linux o macOS, ejecuta los siguientes comandos:<br>
+				$ cd proyectos/<br>
+				$ symfony new cupon 2.8<br>
+				<br>
+				# Si utilizas Windows, ejecuta los siguientes comandos:<br>
+				c:\> cd proyectos\<br>
+				c:\proyectos\> symfony new cupon 2.8
+			</div>
+			<!--
+El comando symfony new crea una nueva aplicación Symfony vacía en el directorio indicado como
+argumento (cupon en este caso). El tercer argumento (2.8 en este ejemplo) indica la versión de
+Symfony a instalar. Si no indicas la versión, se instalará la versión más reciente de Symfony disponible
+en ese momento:
+# utilizar la versión más reciente de Symfony, sea cual sea:
+$ symfony new cupon
+# utilizar la versión más reciente en una determinada "rama" de desarrollo:
+$ symfony new cupon 3.1
+# utilizar una versión exacta de Symfony:
+$ symfony new cupon 2.5.6
+# utilizar la versión más reciente de Symfony que tenga soporte muy largo
+# (en inglés, se denomina versión "Long Term Support" o LTS)
+$ symfony new cupon lts
+3.2.1 Creando la aplicación Symfony con Composer
+Si por cualquier motivo no puedes utilizar el instalador de Symfony, es posible crear la aplicación
+Symfony con Composer (asegúrate de instalar primero Composer tal y como se explica en el primer
+capítulo de este libro):
+# Si utilizas Linux o macOS, ejecuta los siguientes comandos:
+$ composer create-project symfony/framework-standard-edition cupon 2.8.*
+# Si utilizas Windows, ejecuta los siguientes comandos:
+C:\> composer create-project symfony/framework-standard-edition cupon 2.8.*
+La instalación de Symfony con Composer puede tardar hasta varios minutos (con el instalador son
+solo unos segundos) y el proceso es más complicado, ya que Composer te obliga a definir el valor
+de varias opciones de configuración. Por eso se recomienda utilizar el instalador de Symfony
+siempre que sea posible.
+3.3 Actualizando la aplicación Symfony
+El código fuente del framework Symfony se actualiza cada día con mejoras y correcciones de errores,
+por lo que es recomendable que actualices Symfony habitualmente. Gracias a Composer actualizar
+Symfony es realmente sencillo:
+# Si utilizas Linux o macOS, ejecuta los siguientes comandos:
+$ cd proyectos/cupon/
+-->
+		</div>
+	</body>
+</html>
+		
