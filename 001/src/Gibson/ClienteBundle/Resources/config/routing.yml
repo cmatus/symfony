@@ -1,3 +1,15 @@
 gibson_cliente_homepage:
     path:     /
     defaults: { _controller: GibsonClienteBundle:Default:index }
+
+gibson_cliente_index:
+    path:      /cliente/
+    defaults:  { _controller: GibsonClienteBundle:Default:index }
+
+gibson_cliente_listar:
+    path:      /cliente/listar/
+    defaults:  { _controller: GibsonClienteBundle:Default:listar }
+
+gibson_cliente_agregar:
+    path:      /cliente/agregar/
+    defaults:  { _controller: GibsonClienteBundle:Default:agregar }
