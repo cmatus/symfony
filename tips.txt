@@ -20,4 +20,4 @@
  	php app/console doctrine:generate:entities
 
  7. Tablas en BD
-	php app/console doctrine:schema:update --force
+	php app/console doctrine:schema:create
