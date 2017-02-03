@@ -2,22 +2,25 @@
     php c:\xampp\php\symfony new 001
 
  2. Bundles
-	php app/console generate:bundle --namespace=Gibson/ClienteBundle --format=yml
-	php app/console generate:bundle --namespace=Gibson/ProveedorBundle --format=yml
-	php app/console generate:bundle --namespace=Gibson/UsuarioBundle --format=yml
+    php app/console generate:bundle --namespace=Gibson/ClienteBundle --format=yml
+    php app/console generate:bundle --namespace=Gibson/ProveedorBundle --format=yml
+    php app/console generate:bundle --namespace=Gibson/UsuarioBundle --format=yml
 
  3. Modificar parámetros de BD
- 	app/config/parameters.yml
+    app/config/parameters.yml
 
  4. Crear BD
-	php app/console doctrine:database:drop --force
-	php app/console doctrine:database:create
+    php app/console doctrine:database:drop --force
+    php app/console doctrine:database:create
 
  5. Crear entidades
- 	php app/console doctrine:generate:entity
+    php app/console doctrine:generate:entity
 
  6. Getter y Setter
- 	php app/console doctrine:generate:entities
+    php app/console doctrine:generate:entities
 
  7. Tablas en BD
-	php app/console doctrine:schema:create
+    php app/console doctrine:schema:create
+
+ 8. Generar controlador
+    php app/console generate:controller
