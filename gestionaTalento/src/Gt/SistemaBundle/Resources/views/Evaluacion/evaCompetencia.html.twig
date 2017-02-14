@@ -1,0 +1,106 @@
+{% extends 'GtSistemaBundle::basePop.html.twig' %}
+{% block title %} Gestionatalento {% endblock %}
+{#{% block dondeEstoy %}Empresa Cambiar{% endblock %}#}
+
+{% block body %}
+
+
+        <form {{ form_enctype(form) }} method="POST" action="#" >
+            
+        {{ form_errors(form) }}
+                  
+        
+               
+       
+        
+       {# <h3>{{competenciaNombre}}</h3>
+        <h4>{{competenciaDefinicion}}</h4>#}
+        
+        <div style="margin-top: 10px; margin-bottom: 10px">
+            Seleccione una evaluacion para cada pregunta:<br>
+            [<b>1</b>= no lo presenta]
+            [<b>2</b>= en formacion]
+            [<b>3</b>= desempeño esperado] 
+            [<b>4</b>= sobre lo esperado]            
+            [<b>n/o</b>= no observado]
+        </div>
+                
+        <table  data-classes="table table-condensed" data-toggle="table" data-height="200" >
+            {#{% for det1 in form.evaluacionPreguntas %}#}
+
+                <thead class="bg-info">                                 
+                    <tr>
+                        <td><i>Pregunta evaluacion competencia</i></td>
+                        <td><b>1</b></td>
+                        <td><b>2</b></td>
+                        <td><b>3</b></td>
+                        <td><b>4</b></td>
+                        <td><b>n/o</b></td>
+                    </tr>
+                </thead>
+                <tbody>
+                
+                {% set i = 0 %}
+                {% for det in form.evaluacionPreguntas %}                    
+                    <tr>                        
+                        <td>{{ preguntaCompetenciaEntity[i].preguntaCompetenciaNombre}} {{ form_widget(det.preguntaId) }} </td>
+                        <td>{{ form_widget(det.evaluacionPreguntaRespuesta[0]) }}</td>
+                        <td>{{ form_widget(det.evaluacionPreguntaRespuesta[1]) }}</td>
+                        <td>{{ form_widget(det.evaluacionPreguntaRespuesta[2]) }}</td>                        
+                        <td>{{ form_widget(det.evaluacionPreguntaRespuesta[3]) }}</td>
+                        <td>{{ form_widget(det.evaluacionPreguntaRespuesta[4]) }}</td>
+                    </tr>
+                    {% set i = i + 1 %}
+                {% endfor %}
+                                                            
+                </tbody>
+
+            {#{% endfor %}#}
+
+        </table>                                   
+                                        
+        
+                          
+            <input type="button" value="grabar" onclick="grabar()">
+            
+            <input type="hidden" name="competenciaNumero" id="competenciaNumero" value="{{competenciaNumero}}">
+            
+            
+    {{ form_rest(form) }}
+</form>
+    
+{% endblock %}
+
+
+{% block javascript %}   
+
+    <script type="text/javascript">
+
+      
+
+        function grabar() {
+            var form = $('form')[0];
+            if (form.checkValidity()) {
+                console.log('valid');
+
+                var participanteId = "{{ participanteId }}";  
+                var competenciaNumero=document.getElementById("competenciaNumero").value;
+                //competenciaNumero++;
+                //document.getElementById("competenciaNumero").value=competenciaNumero;
+                //form.action = url;
+                var parametro = {
+                        'participanteId': participanteId,                                                
+                        'competenciaNumero':competenciaNumero};
+
+                var url = Routing.generate('evaluacionPreguntaCompetencia', parametro);
+                form.action = url;
+                form.submit();
+            } else {
+                alert("Debe completar las respuestas para grabar")
+            }
+        }
+        
+
+
+    </script>
+{% endblock %}

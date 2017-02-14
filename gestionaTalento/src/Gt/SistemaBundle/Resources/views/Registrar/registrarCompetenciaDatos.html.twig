@@ -1,0 +1,34 @@
+
+
+{{ form_start(form) }}
+
+<p>
+<div class="form-group">
+    {{ form_widget(form.id) }} 
+    {{ form_errors(form.id) }}                                
+    <p>
+        <label for="tbxPerfilNombre">Nombre Competencia</label>    
+        {#<input type="text" id="tbxPerfilNombre" class="form-control input-sm" placeholder="Ingrese nombre">  #}
+        {{ form_widget(form.competenciaNombre) }} 
+        {{ form_errors(form.competenciaNombre) }}                                
+    </p>
+    <p>
+        <label for="tbxPerfilDefinicion">Defincion Competencia</label>        
+{#        <textarea class="form-control input-sm" rows="10" placeholder="Ingrese definicion" ></textarea>    #}
+        
+        {{ form_widget(form.competenciaDefinicion) }} 
+        {{ form_errors(form.competenciaDefinicion) }}                                
+
+    </p>
+    {#<button type="submit" class="btn btn-default">Submit</button>#}
+</div>
+</p>   
+
+{{ form_rest(form) }}
+{{ form_end(form) }}
+                
+
+
+
+            
+

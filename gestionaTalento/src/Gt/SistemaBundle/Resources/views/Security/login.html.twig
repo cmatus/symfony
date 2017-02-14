@@ -1,0 +1,57 @@
+{% extends 'GtSistemaBundle::baseLogin.html.twig' %}
+{% block title %} Gestionatalento {% endblock %}
+{% block body %}
+    <style>
+        .login-container {
+            margin: 0 auto;
+            width: 310px; /* Whatever exact width you are looking for (not bound by preset bootstrap widths) */
+        }
+    </style>
+    <br/><br/><br/>
+
+    <center>
+        <img src="{{ asset('images/clientes/logo_gestionaTalento.png') }}"  style=" height: 45px" >
+    </center>
+    <br/>
+    <div class="login-container" >
+                
+        <div class="panel panel-primary" >            
+            <div class="panel-heading">
+                <h3 class="panel-title">Acceso Clientes</h3>
+            </div>
+            <div class="panel-body" >
+                {#{% for flashMessage in app.session.flashbag.get('notice') %}
+                    <div class="flash-notice" id='flash-notice'>
+                        {{ flashMessage }}
+                    </div>
+                {% endfor %}
+                {% if error %}
+                    <div>{{ error.message }}</div>
+                {% endif %}#}
+
+                {% if error %}
+                    {{error.message}}
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        Correo o contraseña incorrectos.
+                      </div>                    
+                {% endif %}
+                            
+                <form name='thisform' id='thisform' action='{{ path('login_check') }}' method='POST'>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Correo electronico</label>
+                        <input type="email" class="form-control" id="username" name="_username" required='required' placeholder="Correo electronico">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Contraseña</label>
+                        <input type="password" class="form-control" id="password" name="_password" required='required' placeholder="Contraseña">
+                    </div>
+
+                    <button type="submit" class="btn btn-default">Iniciar Sesion</button>
+                    <button type="button" class="btn btn-link" style="margin: 0; padding: 0; ">Olvidaste tu contraseña?</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

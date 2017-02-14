@@ -1,0 +1,697 @@
+{% extends 'GtSistemaBundle::basePop.html.twig' %}
+{% block title %} Gestionatalento {% endblock %}
+{#{% block dondeEstoy %}Empresa Cambiar{% endblock %}#}
+
+{% block body %}
+
+
+
+<div class="container-fluid">
+                
+               {#                                                
+                    <table class="table table-fixed" data-toggle="table" data-url="{{path('preguntaTabla')}}" data-cache="false" data-height="250">
+                        <thead>
+                            <tr>
+                                <th data-field="id">Item ID</th>
+                                <th data-field="name">Item Name</th>
+                                <th data-field="price">Item Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>#}
+                        
+               
+                    
+                <div id="custom-toolbar">
+                    {#<button id='btnPregunta' type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                        Nueva Pregunta
+                    </button>#}
+                    <form class="form-inline" method="post">
+                        <table border="0" width="600px" style="border-collapse:collapse; padding: 0px"><tr><td>
+                            
+                                <button id='btnCuentaBancoNuevo' type="button" class="btn btn-sm btn-primary " onclick="formAccion(1,'0')">
+                                    Nueva Pregunta
+                                </button>
+                            
+                                </td><td align="right">
+                            
+                                <div class="form-group">                                                                
+                                <label class="col-md-5 control-label">Preguntas por</label>
+                                   
+                                        <select id="preguntaTipoId" name="preguntaTipoId" class="form-control">
+                                            <option value="1">COMPETENCIA</option>
+                                            <option value="2">CONOCIMIENTO</option>                             
+                                        </select>             
+                                   
+                                </div>
+                                    
+                                <button type="submit" class="btn btn-default">Filtrar</button>
+                                    
+                            
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+                
+                {{path('maestroTabla', {'maeTipoId': maeTipoId, 'preguntaTipoId':preguntaTipoId})}}
+                             
+                <table data-classes="table table-condensed" 
+                    data-toggle="table" 
+                    data-cache="false" 
+                    data-height="580" 
+                    data-striped="true"  
+                    data-pagination="true"
+                    data-search="true" 
+                    data-show-refresh="true"
+                    data-toolbar="#custom-toolbar"
+                    {#data-show-export="true" exportTypes="['excel', 'txt', 'csv']"   #}                   
+                    data-url="{{path('maestroTabla', {'maeTipoId': maeTipoId, 'preguntaTipoId':preguntaTipoId})}}">
+
+                    <thead>
+                    <tr>                        
+                        <th data-field="id" data-sortable="true" data-visible="false">#</th>                        
+                        <th data-formatter="opciones" data-events="operateEvents">Opciones</th>
+                        <th data-field="preguntaCodigo" data-visible="false" >Codigo</th>                        
+                        <th data-field="preguntaNombre" data-width="600" >Pregunta</th>
+                        {% if preguntaTipoId=="1" %}
+                            <th data-field="competenciaNombre" data-width="100" data-sortable="true">Competencia Asociada</th>
+                            <th data-field="competenciaId" data-visible="false"></th>
+                        {% endif %}
+                        
+                        {% if preguntaTipoId=="2" %}
+                            <th data-field="conocimientoNombre" data-width="100" data-sortable="true">Concimiento Asociado</th>
+                            <th data-field="conocimientoId" data-visible="false"></th>
+                        {% endif %}
+                        
+                        {#<th data-field="preguntaClasificacion" data-sortable="true">Aplica para</th>#}
+                        
+                        
+                        
+                        {#<th data-field="competenciaNombre" data-visible="true"></th>#}
+                       {# <th data-field="preguntaClasificacionFormacion" data-visible="true"></th>
+                        <th data-field="preguntaClasificacionDesarrollo" data-visible="true"></th>
+                        <th data-field="preguntaClasificacionLogrado" data-visible="true"></th>#}
+                        
+                        
+                        
+                    </tr>
+                    </thead>
+                   
+                </table>
+            
+   
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Modal title</h4>
+                </div>
+                <div class="modal-body" id="myModal2Body">                
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div> <!-- /.modal-content -->
+        </div> <!-- /.modal-dialog -->
+    </div> <!-- /.modal -->
+
+
+    <!-- start: Delete Coupon Modal -->
+    <div class="modal fade" id="myModalBorrar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                     <h3 class="modal-title" id="myModaBorrarlLabel">Atencion!</h3>
+
+                </div>
+                <div class="modal-body" id="myModalBodyBorrar">
+                     <h4> Esta seguro de borrar?</h4>
+                     <input type="hidden" name="tbxIdPregunta" id="tbxIdPregunta">
+                </div>
+                <!--/modal-body-collapse -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="btnConfirmaBorrar" onclick="frmBorrar()">Si</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                </div>
+                <!--/modal-footer-collapse -->
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+
+    <!-- window participantes -->
+    <div class="modal fade" id="vtnPregunta" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content modal-lg" >
+                <div class="modal-header bg-info">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Pregunta</h4>
+                </div>
+                <div class="modal-body" id="myModalPersonasBody" style="margin: 0px 0px 0px 0px;  padding: 0px 0px 0px 0px">
+                    <iframe id="frmPregunta" src="" frameborder="0"  ></iframe>
+                </div>
+                {#<div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>#}
+                    {#<button type="button" class="btn btn-primary">Save changes</button>#}
+                {#</div>#}
+            </div> <!-- /.modal-content -->
+        </div> <!-- /.modal-dialog -->
+    </div> <!-- /.modal -->
+    
+    
+    <!-- Modal -->
+{#    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content modal-lg">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Pregunta</h4>
+                </div>
+                
+                <div class="modal-body" id="myModalBody">                
+                    <iframe id="frmPregunta" src="" frameborder="0"  ></iframe>                    
+                        <!--<input type="text" class="form-control" aria-label="Competencia">-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="frmSubmit()" >Guardar Pregunta</button>
+                </div>
+            </div> <!-- /.modal-content -->
+        </div> <!-- /.modal-dialog -->#}
+    </div> <!-- /.modal -->
+
+
+
+{% endblock %}
+
+
+
+{% block javascript %}   
+
+    <script type="text/javascript">
+        
+    
+        function opciones(value, row, index) {
+            return [
+                '<div class="btn-group" role="group"><button type="button" class="modificar btn btn-xs btn-default" ><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>',
+                '<button type="button" class="borrar btn btn-xs btn-default" ><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>',
+                '</div>'
+            ].join('');
+        }
+        
+        window.operateEvents = {
+        
+            'click .modificar': function (e, value, row, index) {
+                formAccion(1, row.id);
+
+            },
+            'click .borrar': function (e, value, row, index) {
+
+                $('#winBorrar').modal('show');
+                $("#maeRegistroId").val(row.id);
+            },
+        };
+        
+        
+        var wins;
+        var wins2;
+        var winId;
+        function formAccion(accionId, maeRegistroId) {                                    
+            
+            objParametros= [{
+                            'maeTipoId': '{{maeTipoId}}',
+                            'maeNombre': 'pregunta',                                    
+                            'winParent': '{{winParent}}',   
+                            'entityId':maeRegistroId,
+                            'preguntaTipoId': '{{preguntaTipoId}}'
+                            }];
+                                                                    
+            var jsnParametros = JSON.stringify(objParametros);
+            
+            var parametros={'maeParametros': jsnParametros};
+                    
+            switch (accionId) {
+                case 1:
+                    var url=Routing.generate('maestroRegistrar', parametros);
+                    alert(url)
+                    wins2 = new dhtmlXWindows();
+                    skin="dhx_terrace";
+                    wins2.setSkin(skin);
+                    
+                    winId="winPreguntaRegistrar";
+                    
+                    wins2.createWindow(winId, 1, 1, 780, 560);
+                    wins2.window(winId).setText("<h5>Pregunta</h5>");
+            
+                    wins2.window(winId).setModal(true);
+                    wins2.window(winId).button("minmax").disable();                   
+                    wins2.window(winId).centerOnScreen();                   
+                    wins2.window(winId).progressOn();
+                   
+                    wins2.window(winId).setIconCss("without_icon");
+
+                    //var jsnParametros = JSON.stringify(maeParametros);
+                    //var urlParametros={'maeTipoId':maeTipoId, 'winParent': winParent, 'maeParametros': maeParametros};
+                    //var url = Routing.generate('maestro', urlParametros);
+                    wins2.window(winId).attachURL(url);
+
+                    wins2.window(winId).attachEvent("onContentLoaded", function(id){
+                       //alert(id.id);
+                       id.progressOff();        
+                       var ifr = id.getFrame();
+                       ifr.contentWindow.wins=wins;
+                       //ifr.contentWindow.winParent=winParent;
+                       //alert(ifr.contentWindow.winParent);
+                    });     
+
+                    //document.location.href=url;
+                    break
+                case 2:
+                    window.parent.winProgress(wins,"winPregunta", 1); 
+                    var url=Routing.generate('maestroBorrar', parametros);
+                    var form = $('form')[0];                   
+                    
+                    form.action=url;
+                    form.submit();
+                    break;
+            }
+        }
+        
+        function cerrar() {
+            winId="winPreguntaRegistrar";
+            wins2.window(winId).close();
+        }
+        
+        function progress() {
+            winId="winPreguntaRegistrar";
+            wins2.window(winId).progressOn();
+        }
+        
+        function refreshTabla() {
+            //alert("aca");
+            var $table = $('#tblPregunta');
+            $table.bootstrapTable('refresh');
+        }  
+        
+        
+        
+            
+    var id = 0,
+    getRows = function () {
+        var rows = [];
+
+        for (var i = 0; i < 5; i++) {
+            rows.push({
+                id: id,
+                name: 'test' + id,
+                price: '$' + id
+            });
+            id++;
+        }
+        return rows;
+    }
+
+    var id = 0,
+    getRows2 = function () {
+        var rows = [];
+
+        for (var i = 0; i < 0; i++) {
+            rows.push({
+                xxx: '',
+                xxx2: '',
+            });
+            id++;
+        }
+        return rows;
+    }
+          
+    
+        //$('#tableActividadClave').bootstrapTable('destroy');   
+           
+            
+            
+            
+        
+        
+         function stateFormatter(value, row, index) {
+            
+            if (row.preguntaActividadClaveAsociada=="1") {
+                return { checked: true };
+            }
+            
+            if (row.preguntaAprendizajeAsociada=="1") {
+                return { checked: true };
+            }
+            
+            {#if (index === 0) {
+                return {
+                     checked: true
+                };
+            }
+            if (index === 1) {
+                return {
+                    disabled: true,
+                    checked: true
+                }
+            }
+            return value;#}
+        }
+
+
+        function frmBorrar() {            
+            //var objPanelFiltroAno = document.querySelector("#panelFiltroAno");            
+            var idPregunta= document.getElementById("tbxIdPregunta").value ;                        
+            url = Routing.generate('preguntaRegistrar');
+            document.thisform.action=url
+            document.thisform.submit();            
+        }
+            
+        function preguntaTipo(value) {
+            //document.getElementById("thisform_preguntaAsociada").value=value;                                      
+            var competenciaId=document.getElementById("thisform_competenciaId").value;
+            var conocimientoId=document.getElementById("thisform_conocimientoId").value;
+                
+            switch (value) {
+                case "1":
+                    document.getElementById("dvCompetencia").style.display="block";
+                    document.getElementById("dvConocimiento").style.display="none";
+                    
+                   {# if (competenciaId=="") {
+                        $('#tableActividadClave').bootstrapTable('destroy');
+                        $('#tableActividadClave').bootstrapTable('showLoading');
+                        $('#tableActividadClave').bootstrapTable({data: getRows2()}); 
+                    }#}    
+                    
+                    break;
+                case "2":
+                    document.getElementById("dvCompetencia").style.display="none";
+                    document.getElementById("dvConocimiento").style.display="block";
+                    
+                  {#  if (conocimientoId=="") {
+                        $('#tableAprendizaje').bootstrapTable('destroy');             
+                        $('#tableAprendizaje').bootstrapTable('showLoading');
+                        $('#tableAprendizaje').bootstrapTable({data: getRows2()});
+                    }   #} 
+                    
+                    
+                    break;
+            }
+        }
+        
+       
+       {# 
+        function operateFormatter(value, row, index) {
+            return [
+                '<button id="btnModificar" name="btnModificar" type="button" class="modificar btn btn-primary btn-xs" >Modificar</button>&nbsp;',
+                '<button id="btnBorrar" name="btnBorrar" type="button" class="borrar btn btn-primary btn-xs">Borrar</button>',            
+            ].join('');
+        }#}
+
+        {#window.operateEvents = {
+            'click .modificar': function (e, value, row, index) {
+                preguntaRegistrar(row.id)
+
+            },
+            'click .borrar': function (e, value, row, index) {
+                $('#myModalBorrar').data('id', row.id).modal('show');
+                //alert('You click borrar icon, row: ' + JSON.stringify(row));
+                //console.log(value, row, index);
+            },
+            'click .remove': function (e, value, row, index) {
+                alert('You click remove icon, row: ' + JSON.stringify(row));
+                console.log(value, row, index);
+            }
+        };#}
+        
+              
+     $('#vtnPregunta').on('hidden.bs.modal', function (e) {
+            $(this).find('iframe').html("");
+            $(this).find('iframe').attr("src", "");
+        })
+    
+{#        $('#myModal').on('hidden.bs.modal', function (e) {
+            var preguntaTipoId=document.getElementById("thisform_preguntaTipoId").value;
+        })
+#}        
+
+        $('#myModal').on('show.bs.modal', function(event) {
+            //var button = $(event.relatedTarget) // Button that triggered the modal
+            //var recipient = button.data('whatever') // Extract info from data-* attributes
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            var modal = $(this)
+            //modal.find('.modal-title').text('xxxx')
+            
+            $('#tableActividadClave').bootstrapTable('destroy');
+            $('#tableActividadClave').bootstrapTable('showLoading');
+            $('#tableActividadClave').bootstrapTable({data: getRows2()})
+
+            $('#tableAprendizaje').bootstrapTable('destroy');             
+            $('#tableAprendizaje').bootstrapTable('showLoading');
+            $('#tableAprendizaje').bootstrapTable({data: getRows2()});
+            
+            
+            if ($('#myModal').data("registro").id>0) {   
+                
+                var preguntaId=$('#myModal').data("registro").id;
+                var preguntaTipoId=$('#myModal').data("registro").preguntaTipoId;
+                var preguntaCodigo=$('#myModal').data("registro").preguntaCodigo;
+                var preguntaNombre=$('#myModal').data("registro").preguntaNombre;
+                var preguntaClasificacionFormacion=$('#myModal').data("registro").preguntaClasificacionFormacion;
+                var preguntaClasificacionDesarrollo=$('#myModal').data("registro").preguntaClasificacionDesarrollo;
+                var preguntaClasificacionLogrado=$('#myModal').data("registro").preguntaClasificacionLogrado;
+                
+                var competenciaId=$('#myModal').data("registro").competenciaId;
+                var conocimientoId=$('#myModal').data("registro").conocimientoId;
+                
+                
+                modal.find('.modal-body #thisform_id').val(preguntaId);
+                modal.find('.modal-body #thisform_preguntaCodigo').val(preguntaCodigo);
+                modal.find('.modal-body #thisform_preguntaNombre').val(preguntaNombre);
+                modal.find('.modal-body #thisform_preguntaTipoId').val(preguntaTipoId);
+                
+                //var preguntaTipoId=$('#myModal').data("registro").preguntaTipoId;
+                
+                if (preguntaClasificacionFormacion) {$("#thisform_preguntaClasificacionFormacion").prop("checked", "checked");}
+                if (preguntaClasificacionDesarrollo) {$("#thisform_preguntaClasificacionDesarollo").prop("checked", "checked");}
+                if (preguntaClasificacionLogrado) {$("#thisform_preguntaClasificacionLogrado").prop("checked", "checked");}
+                
+                switch (preguntaTipoId) {
+                    case 1:
+                        
+                        //alert(preguntaConocimiento)
+                        //alert(modal.find('.modal-body optAsocia').val());
+                        //alert($('input:radio[name=optAsocia]:checked').val());
+                        
+                        
+                        
+                        //$('input:radio[name=optAsocia][value="Competencia"]').prop('checked', true);    
+                        $('#dvCompetencia').attr("style","display:block");
+                        $('#dvConocimiento').attr("style","display:none");                
+                        modal.find('.modal-body #thisform_competenciaId').val(competenciaId);
+                        
+                        //Buscamos las actividades claves asociadas a la competencia
+                        var parametro = {'competenciaId':competenciaId*1, 'preguntaId':preguntaId};
+                        
+                        //$('#tableActividadClave').bootstrapTable('destroy');
+                        $('#tableActividadClave').bootstrapTable('showLoading');
+                        var url = Routing.generate('preguntaTablaActividadClave', parametro);
+                        $.ajax({
+                            url: url,                        
+                            type: 'post',                        
+                            dataType: 'json',
+                            success: function(respuesta) {
+                                $('#tableActividadClave').bootstrapTable('destroy');                                
+                                $('#tableActividadClave').bootstrapTable({data: respuesta});
+                            },
+                            // código a ejecutar si la petición falla;
+                            error: function(xhr, status) {
+                                alert('Disculpe, existió un problema');
+                            },
+                        });
+                
+                        break;
+                    case 2:                        
+                        
+                        
+                        
+                        //alert(conocimientoId);
+                        //$('input:radio[name=optAsocia][value="Conocimiento"]').prop('checked', true);
+                        $('#dvCompetencia').attr("style","display:none");
+                        $('#dvConocimiento').attr("style","display:block");                
+                        modal.find('.modal-body #thisform_conocimientoId').val(conocimientoId);
+                        $('#tableAprendizaje').bootstrapTable('destroy');
+                        $table = $('#tableAprendizaje').bootstrapTable({
+                            data: getRows2()
+                        });
+                        
+                        //Buscamos los aprendizajes asociados al conocimiento
+                        var parametro = {'conocimientoId': conocimientoId*1, 'preguntaId':preguntaId};
+                        $('#tableAprendizaje').bootstrapTable('showLoading'); 
+                        var url = Routing.generate('preguntaTablaAprendizaje', parametro);
+                        alert(url);
+                        $.ajax({
+                            url: url,                        
+                            type: 'post',                        
+                            dataType: 'json',
+                            success: function(respuesta) {
+                                $('#tableAprendizaje').bootstrapTable('destroy');                            
+                                $('#tableAprendizaje').bootstrapTable({data: respuesta});
+                            },
+                            // código a ejecutar si la petición falla;
+                            error: function(xhr, status) {
+                                alert('Disculpe, existió un problema');
+                            },
+                        });
+                        
+                        break;                
+                }
+                //modal.find('.modal-body optConocimiento').val($('#myModal').data("registro").preguntaTipoId);
+            } else {
+                modal.find('.modal-body #thisform_id').val("");
+                modal.find('.modal-body #thisform_preguntaCodigo').val("");
+                modal.find('.modal-body #thisform_preguntaNombre').val("");
+                modal.find('.modal-body #thisform_competenciaId').val("");    
+                modal.find('.modal-body #thisform_conocimientoId').val("");
+                modal.find('.modal-body #thisform_preguntaTipoId').val("");                
+                
+                //$('input:radio[name=optAsocia][value="Competencia"]').prop('checked', true);
+                //$('input:radio[name=optAsocia][value="Conocimiento"]').prop('checked', false); 
+                
+               {# $('#tableActividadClave').bootstrapTable('destroy');
+                $('#tableActividadClave').bootstrapTable('showLoading');
+                $('#tableActividadClave').bootstrapTable({data: getRows2()});            
+
+                $('#tableAprendizaje').bootstrapTable('destroy');             
+                $('#tableAprendizaje').bootstrapTable('showLoading');
+                $('#tableAprendizaje').bootstrapTable({data: getRows2()});#}
+
+            
+                //modal.find('.modal-body #thisform_preguntaAsociada').val("Competencia");
+                //$('#tableActividadClave').bootstrapTable('destroy');
+               {# $table = $('#tableActividadClave').bootstrapTable({
+                    data: getRows2()
+                });
+                $('#tableAprendizaje').bootstrapTable('destroy');
+                $table = $('#tableAprendizaje').bootstrapTable({
+                    data: getRows2()
+                });#}
+                
+                $('#dvCompetencia').attr("style","display:none");
+                $('#dvConocimiento').attr("style","display:none");
+            }
+        });
+
+        $('#myModalBorrar').on('show.bs.modal', function(event) {
+            var modal = $(this)
+            modal.find('.modal-body #tbxIdPregunta').val($('#myModalBorrar').data("id"));
+        });
+        
+            $(document).ready(function() {
+                $('#btnPregunta').on('click', function() {
+                    //$('#myModal').data('registro', {id: 0});                
+                    preguntaRegistrar(0);
+                
+            });
+            
+                document.getElementById("preguntaTipoId").value = "{{preguntaTipoId}}";
+            
+                
+                // init table use data
+                {#$table = $('#table-methods-table').bootstrapTable({
+                    data: getRows()
+                });#}
+                
+                // init table use data
+                
+               
+                
+               {# $table = $('#tableActividadClave').bootstrapTable({
+                    data: getRows2()
+                });
+                
+                $table = $('#tableAprendizaje').bootstrapTable({
+                    data: getRows2()
+                });#}
+                
+                
+                {#$('#btnPregunta').on('click', function() {
+                    origen = "1";
+                    var parametro = {'origen': origen};
+                    //var url = Routing.generate('maestro_conceptocontable_mantenedorDHX',parametro);  
+                    var url = Routing.generate('preguntaDatos');
+                    alert(url);
+                });#}
+                // Asociar un evento al botón que muestra la ventana modal
+                $('#thisform_conocimientoId').on('change', function() {
+                    conocimientoId = $(this).val();
+                  
+                    var parametro = {'conocimientoId': conocimientoId, 'preguntaId': '0'};
+                    $('#tableAprendizaje').bootstrapTable('showLoading'); 
+                    var url = Routing.generate('preguntaTablaAprendizaje', parametro);
+                    
+                    $.ajax({
+                        url: url,                        
+                        type: 'post',                        
+                        dataType: 'json',
+                        success: function(respuesta) {
+                            $('#tableAprendizaje').bootstrapTable('destroy');                            
+                            $('#tableAprendizaje').bootstrapTable({data: respuesta});
+                        },
+                        // código a ejecutar si la petición falla;
+                        error: function(xhr, status) {
+                            alert('Disculpe, existió un problema');
+                        },
+                    });
+                });
+                
+                
+            });
+            
+           {# var parametro = {'competenciaId': '1', 'preguntaId':'0'};
+            var url = Routing.generate('preguntaTablaActividadClave', parametro);
+                    
+            BootstrapDialog.show({
+                 message: $('<div></div>').load(url)
+            });#}
+
+
+
+            function preguntaRegistrar(preguntaId) {
+                var preguntaTipoId={{ preguntaTipoId }};
+                var parametro = {'preguntaId':preguntaId, 'preguntaTipoId':preguntaTipoId};
+                var url = Routing.generate('preguntaRegistrar', parametro);
+                
+                //document.location.href=url;        
+                //$('#myModalPersonas').val('');
+                {#$('#winParticipantes').find('.modal-body #myModalPersonasProgres').attr("style", "display:block");#}
+                //$("#myModalPersonas iframe").attr({'src':''});
+
+                $("#vtnPregunta iframe").attr({'src':url,
+                                   'height': 520,
+                                   'width': '100%'});
+
+                $("#vtnPregunta").modal("show");    
+
+            }
+
+        
+            
+       
+        
+            
+    </script>
+{% endblock %}
+

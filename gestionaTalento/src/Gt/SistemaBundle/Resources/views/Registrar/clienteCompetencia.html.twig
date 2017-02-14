@@ -1,0 +1,360 @@
+{% extends 'GtSistemaBundle::base.html.twig' %}
+{% block title %} Gestionatalento {% endblock %}
+{#{% block dondeEstoy %}Empresa Cambiar{% endblock %}#}
+
+{% block body %}
+
+{{ form_start(form) }}
+
+  <div class="container">     
+    <div class="center-block" >
+        <div class="panel panel-primary" >
+            <div class="panel-heading">
+                <h3 class="panel-title">Competencias</h3>
+            </div>
+            <div class="panel-body" >
+                
+               {#                                                
+                    <table class="table table-fixed" data-toggle="table" data-url="{{path('clienteCompetenciaTabla')}}" data-cache="false" data-height="250">
+                        <thead>
+                            <tr>
+                                <th data-field="id">Item ID</th>
+                                <th data-field="name">Item Name</th>
+                                <th data-field="price">Item Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>#}
+                        
+               
+                    
+                <div id="custom-toolbar">
+                    <button id='btnCompetencia' type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                        Nueva Competencia
+                    </button>
+                </div>
+                
+                
+                <table id='tblCompetencias' data-classes="table table-condensed" 
+                       data-toggle="table" 
+                       data-cache="false" 
+                       data-height="500" 
+                       data-striped="true"  
+                       data-pagination="true"
+                       data-search="true" 
+                       data-show-refresh="true"
+                       data-toolbar="#custom-toolbar"
+                       data-show-export="true" exportTypes="['excel', 'txt', 'csv']"
+                       data-url="{{path('clienteCompetenciaTabla')}}">
+                    <thead>
+                    <tr>
+                        <th data-field="id" data-sortable="true">#</th>                        
+                        <th data-field="clienteCompetenciaCodigo" data-sortable="true">Codigo</th>
+                        <th data-field="clienteCompetenciaNombre" data-sortable="true">Nombre Competencia</th>
+                        <th data-field="clienteCompetenciaDefinicion" data-width="600">Definicion</th>
+                        <th data-field="operate" data-formatter="operateFormatter" data-events="operateEvents">Opciones</th>
+                    </tr>
+                    </thead>                    
+                </table>                
+            </div>    
+        </div>
+    </div>
+   
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Modal title</h4>
+                </div>
+                <div class="modal-body" id="myModal2Body">                
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div> <!-- /.modal-content -->
+        </div> <!-- /.modal-dialog -->
+    </div> <!-- /.modal -->
+
+
+    <!-- start: Delete Coupon Modal -->
+    <div class="modal fade" id="myModalBorrar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                     <h3 class="modal-title" id="myModaBorrarlLabel">Atencion!</h3>
+
+                </div>
+                <div class="modal-body" id="myModalBodyBorrar">
+                     <h4> Esta seguro de borrar?</h4>
+                     <input type="hidden" name="tbxIdCompetencia" id="tbxIdCompetencia">
+                </div>
+                <!--/modal-body-collapse -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="btnConfirmaBorrar" onclick="frmBorrar()">Si</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                </div>
+                <!--/modal-footer-collapse -->
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content modal-lg">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Nueva Competencia</h4>
+                </div>
+                <div class="modal-body" id="myModalBody">                
+                    {{ form_widget(form.id) }}
+                    {{ form_errors(form.id) }}
+                    {{ form_widget(form.empresaId) }}
+                    {{ form_errors(form.empresaId) }}
+                    {{ form_widget(form.clienteId) }}
+                    {{ form_errors(form.clienteId) }}
+                    <p>
+                    <label for="tbxCompetenciaCodigo">Codigo Competencia</label><br>
+                    {{ form_widget(form.clienteCompetenciaCodigo) }} 
+                    {{ form_errors(form.clienteCompetenciaCodigo) }}
+                    </p>
+                    <p>
+                       <label for="tbxPerfilNombre">Nombre Competencia</label>    
+                       {#<input type="text" id="tbxPerfilNombre" class="form-control input-sm" placeholder="Ingrese nombre">  #}
+                       {{ form_widget(form.clienteCompetenciaNombre) }} 
+                       {{ form_errors(form.clienteCompetenciaNombre) }}
+                    </p>
+                    <p>
+                        <label for="tbxPerfilDefinicion">Defincion Competencia</label>        
+                {#        <textarea class="form-control input-sm" rows="10" placeholder="Ingrese definicion" ></textarea>    #}
+
+                        {{ form_widget(form.clienteCompetenciaDefinicion) }} 
+                        {{ form_errors(form.clienteCompetenciaDefinicion) }}
+
+                    </p>
+                    
+                   
+    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" >Guardar Competencia</button>
+                </div>
+            </div> <!-- /.modal-content -->
+        </div> <!-- /.modal-dialog -->
+    </div> <!-- /.modal -->
+</div>
+
+
+{{ form_rest(form) }}
+{{ form_end(form) }}
+
+
+</form>
+
+{% endblock %}
+
+
+
+{% block javascript %}   
+
+    <script type="text/javascript">
+        
+        function frmBorrar() {            
+            //var objPanelFiltroAno = document.querySelector("#panelFiltroAno");            
+            var idCompetencia= document.getElementById("tbxIdCompetencia").value ;                        
+            url = Routing.generate('clienteCompetenciaRegistrar');
+            document.thisform.action=url
+            document.thisform.submit();            
+        }
+            
+        
+        function operateFormatter(value, row, index) {
+            return [
+                '<button id="btnModificar" name="btnModificar" type="button" class="modificar btn btn-primary btn-xs">Modificar</button>&nbsp;',
+                '<button id="btnBorrar" name="btnBorrar" type="button" class="borrar btn btn-primary btn-xs">Borrar</button>&nbsp;',
+                '<br><button id="btnActividadClave" name="btnActividadClave" type="button" class="actividad btn btn-info btn-xs">Actvidades Claves</button>',
+                
+            ].join('');
+        }
+
+    window.operateEvents = {
+        'click .modificar': function (e, value, row, index) {
+            //alert('You click modificar icon, row: ' + JSON.stringify(row));
+            //console.log(value, row, index);
+            $('#myModal').data('registro', {id: row.id, 
+                                            clienteCompetenciaNombre: row.clienteCompetenciaNombre, 
+                                            clienteCompetenciaDefinicion: row.clienteCompetenciaDefinicion }).modal('show');
+        },
+        'click .borrar': function (e, value, row, index) {
+            $('#myModalBorrar').data('id', row.id).modal('show');
+            //alert('You click borrar icon, row: ' + JSON.stringify(row));
+            //console.log(value, row, index);
+        },
+        'click .remove': function (e, value, row, index) {
+            alert('You click remove icon, row: ' + JSON.stringify(row));
+            console.log(value, row, index);
+        }
+    };
+    
+    
+    
+    
+        {#        $('#myModal').on('hidden.bs.modal', function (e) {
+                    alert("aca");
+                  })
+        #}
+
+        $('#myModal').on('show.bs.modal', function(event) {
+            //var button = $(event.relatedTarget) // Button that triggered the modal
+            //var recipient = button.data('whatever') // Extract info from data-* attributes
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            var modal = $(this)
+            //modal.find('.modal-title').text('xxxx')
+            if ($('#myModal').data("registro").id>0) {                    
+                modal.find('.modal-body #thisform_id').val($('#myModal').data("registro").id);
+                modal.find('.modal-body #thisform_clienteCompetenciaNombre').val($('#myModal').data("registro").clienteCompetenciaNombre);
+                modal.find('.modal-body #thisform_clienteCompetenciaDefinicion').val($('#myModal').data("registro").clienteCompetenciaDefinicion);
+            } else {
+                modal.find('.modal-body #thisform_id').val("");
+                modal.find('.modal-body #thisform_clienteCompetenciaNombre').val("");
+                modal.find('.modal-body #thisform_clienteCompetenciaDefinicion').val("");
+
+            }
+        });
+
+        $('#myModalBorrar').on('show.bs.modal', function(event) {
+            var modal = $(this)
+            modal.find('.modal-body #tbxIdCompetencia').val($('#myModalBorrar').data("id"));
+        });
+        
+            $(document).ready(function() {
+                $('#btnCompetencia').on('click', function() {
+                $('#myModal').data('registro', {id: 0});
+            });
+               
+                
+                {#$('#btnCompetencia').on('click', function() {
+                    origen = "1";
+                    var parametro = {'origen': origen};
+                    //var url = Routing.generate('maestro_conceptocontable_mantenedorDHX',parametro);  
+                    var url = Routing.generate('clienteCompetenciaDatos');
+                    alert(url);
+                });#}
+                // Asociar un evento al botón que muestra la ventana modal
+                $('#btnCompetencia2').on('click', function() {
+                    origen = "1";
+                    var parametro = {'origen': origen};
+                    //var url = Routing.generate('maestro_conceptocontable_mantenedorDHX',parametro);  
+                    var url = Routing.generate('clienteCompetenciaDatos');
+                    alert(url);
+                    html = "<div class='input-group'><span class='input-group-addon' id='basic-addon2'>1</span><input type='text' class='form-control' placeholder='Ingrese Conocimiento' aria-describedby='basic-addon2'></div>";
+                    $.ajax({
+                        // la URL para la petición
+
+                        url: url,
+                        // la información a enviar
+                        //data : { 'fac' : <?php echo $dato['factura']; ?> },
+                        // especifica si será una petición POST o GET
+                        type: 'post',
+                        // el tipo de información que se espera de respuesta
+                        dataType: 'html',
+                        // código a ejecutar si la petición es satisfactoria;
+
+                        success: function(respuesta) {
+                            //alert(respuesta);
+                            //$('#myModal2').html("<table><tr><td>Se ejecuto</td></tr></table>");
+                            $('#myModalBody').html(respuesta);
+                        },
+                        // código a ejecutar si la petición falla;
+                        error: function(xhr, status) {
+                            alert('Disculpe, existió un problema');
+                        },
+                    });
+                });
+            });
+
+
+   {# $('#tblCompetencias').dataTable( {       
+        "oLanguage":{"sSearch": "Buscar"}
+    });#}
+
+$.extend(true, $.fn.dataTable.defaults.oLanguage, {
+     
+    "sProcessing": "Processando...",
+    "sLengthMenu": "Mostrar _MENU_ registros",
+    "sZeroRecords": "Não foram encontrados resultados",
+    "sInfo":  "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+    "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros",
+    "sInfoFiltered": "(filtrado de _MAX_ registros no total)",
+    "sInfoPostFix": "",
+    "sSearch": "Buscar:",
+    "oPaginate": {
+        "sFirst": "Primeiro",
+        "sPrevious": "Anterior",
+        "sNext": "Seguinte",
+        "sLast": "Último",
+    }
+     
+});
+
+
+        $(document).ready(function() {
+            $('#tblCompetencias2').DataTable( {
+                "language": {
+                    "lengthMenu": "Display _MENU_ records per page",
+                    "zeroRecords": "Nothing found - sorry",
+                    "info": "Registros page _PAGE_ of _PAGES_",
+                    "infoEmpty": "No records available",
+                    "infoFiltered": "(filtered from _MAX_ total records)",
+                    "sSearch":"Buscar:",
+                    
+                }
+            } );
+        } );
+
+{#
+    $('.tblCompetencias').dataTable({
+                //"sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span12'i><'span12 center'p>>",
+                //"bJQueryUI": true,
+                //"sPaginationType": "full_numbers",
+                "sPaginationType": "bootstrap",
+                "oLanguage": {
+                "sProcessing":     "Procesando...",
+                "sLengthMenu":     "Mostrar _MENU_ registros",
+                "sZeroRecords":    "No se encontraron resultados",
+                "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix":    "",
+                "sSearch":         "Buscar:",
+                "sUrl":            "",
+                "sInfoThousands":  ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                "sFirst":    "Primero",
+                "sLast":     "Último",
+                "sNext":     "Siguiente",
+                "sPrevious": "Anterior"
+                },
+        "fnInfoCallback": null,
+                }
+            } );
+            #}
+            
+    </script>
+{% endblock %}
+

@@ -1,0 +1,112 @@
+{% extends 'GtSistemaBundle::basePop.html.twig' %}
+
+{% block body %}
+
+    <style>
+        .popover-footer{
+            padding: 6px 14px;
+            background-color: #f7f7f7;
+            border-top: 1px solid #ebebeb;
+            text-align: right;
+        }
+                          
+        .bootstrap-table .table,
+        .bootstrap-table .table > tbody > tr > th,
+        .bootstrap-table .table > tfoot > tr > th,            
+        .bootstrap-table .table > tbody > tr > td,
+        .bootstrap-table .table > tfoot > tr > td {            
+            padding: 2px !important;
+            vertical-align: top;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            //white-space: nowrap;
+            font-size:11.5px;
+           
+        }
+        
+        .fixed-table-container thead th .th-inner {
+            padding: 2px !important;        
+            font-size:12px;
+        }
+        
+    </style>
+
+
+    <form {{ form_enctype(form) }} method="POST" action="#" >
+        
+    {% set guardado=false %}
+
+        {% for flashMessage in app.session.flashbag.get('notice') %}
+            <div class="flash-notice">                              
+                <div class="alert alert-success alert-dismissible" role="alert" style="padding-bottom:0px; padding-top: 0px; margin-bottom: 3px">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" ><span aria-hidden="true">&times;</span></button>
+                    {{ flashMessage }}
+                    {% set guardado=true %}
+                </div>                               
+            </div>
+        {% endfor %}
+
+             
+
+    <table style="border-collapse: collapse; width: 100%">
+       
+    <tr>
+        <td valign="top">
+
+
+
+                    <div class="container-fluid" style="padding-left:0px; padding-right: 0px; margin-right: 0px ">
+                    
+                    {{ form_widget(form.id) }}
+                    {{ form_errors(form.id) }}
+                   
+                    
+                    <p>
+                       <label>Nombre</label>    
+                       {{ form_widget(form.evaluacionNombre) }} 
+                       {{ form_errors(form.evaluacionNombre) }}
+                    </p>
+                    
+                  
+                    <p>
+                       <label>Definicion</label>    
+                       {{ form_widget(form.evaluacionDefinicion) }} 
+                       {{ form_errors(form.evaluacionDefinicion) }}
+                    </p>
+                    
+                    
+                                                            
+                    </div>
+               {# </div>    
+            </div>#}
+        </td>                             
+    </tr>
+     
+    <tr>
+        <td align="right" colspan="2">
+          {#  <div class="panel panel-primary" style="margin:0px; padding: 0px;">                        
+                <div class="panel-body" style="padding: 5px" >    #}                        
+                        <button type="button" class="btn btn-sm btn-default" data-dismiss="modal" onclick="parent.cerrar()">Cerrar</button>
+                        {% if guardado %}
+                            <button type="button" id="btnOtro" name="btnOtro" class="btn btn-sm btn-primary" onclick="formAccion(1, '0')">Agregar Otro</button>
+                            <script type="text/javascript">
+                                window.parent.refreshTabla();
+                            </script>
+                            
+                        {% endif %}
+                        <button type="submit" id="btnGuardar" name="btnGuardar" class="btn btn-sm btn-primary" >Guardar</button>
+
+        </td>    
+    </tr>
+</table>
+    
+{{ form_rest(form) }}
+</form>
+{% endblock %}
+
+    {% block javascript %} 
+        <script type="text/javascript">
+            var wins;
+
+        </script>  
+    {% endblock %}    

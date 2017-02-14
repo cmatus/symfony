@@ -1,0 +1,264 @@
+_welcome:
+    path:  /
+    defaults:  { _controller: GtSistemaBundle:Main:index }
+    requirements:
+        _method:  GET
+
+inicio:
+    path:     /inicio
+#    defaults: { _controller: GtSistemaBundle:Evaluacion:evaluacionRegistrar}
+    defaults: { _controller: GtSistemaBundle:Inicio:inicio}
+    
+#login:
+#    pattern:  /login
+#    defaults: { _controller: GtSistemaBundle:Security:login }
+#
+#login_check:
+#    pattern:  /login_check
+#
+#logout:
+#    pattern:  /logout
+#    
+#logoutsession:
+#    pattern:  /logoutsession
+#    defaults: { _controller: GtSistemaBundle:Security:logoutSession }    
+#    
+#get:
+#    pattern:  /get
+#    defaults: { _controller: GtSistemaBundle:Get:get }    
+    
+#inicio:
+#    pattern:  /inicio
+#    defaults: { _controller: LoginSistemaBundle:Security:inicio }
+#    options: 
+#        expose: tru
+#        
+
+maestroMenu:
+    path:     /maestros/menu
+    defaults: { _controller: GtSistemaBundle:Maestro:maestroMenu }
+    
+maestro:
+    path:     /maestro/{maeTipoId}
+    defaults: { _controller: GtSistemaBundle:Maestro:maestro }
+
+maestroTabla:
+    path:     /maestro/tabla/{maeTipoId}
+    defaults: { _controller: GtSistemaBundle:Maestro:maestroTabla }
+
+maestroRegistrar:
+    path:     /maestro/registrar/{maeParametros}
+    defaults: { _controller: GtSistemaBundle:Maestro:maestroRegistrar }
+
+maestroBorrar:
+    path:     /maestro/borrar/{maeParametros}
+    defaults: { _controller: GtSistemaBundle:Maestro:maestroBorrar }
+        
+competenciaRegistrar:
+    path:   /competenciaRegistrar
+    defaults: { _controller: GtSistemaBundle:Competencia:competenciaRegistrar}
+    options: 
+        expose: true
+        
+competenciaTabla:
+    path:   /competenciaTabla
+    defaults: { _controller: GtSistemaBundle:Competencia:competenciaTabla}
+
+actvidadClaveRegistrar:
+    path:   /competenciaRegistrar
+    defaults: { _controller: GtSistemaBundle:ActvidadClave:actvividadClaveRegistrar}
+
+actividadClaveTabla:
+    path:   /competenciaTabla
+    defaults: { _controller: GtSistemaBundle:ActvidadClave:actividadClaveTabla}
+
+pregunta:
+    path:   /pregunta/{preguntaTipoId}
+    defaults: { _controller: GtSistemaBundle:Pregunta:pregunta}
+    
+preguntaRegistrar:
+    path:   /preguntaRegistrar/{preguntaId}/{preguntaTipoId}
+    defaults: { _controller: GtSistemaBundle:Pregunta:preguntaRegistrar}
+
+preguntaConocimientoRegistrar:
+    path:   /preguntaConocimientoRegistrar/{preguntaId}
+    defaults: { _controller: GtSistemaBundle:Pregunta:preguntaConocimientoRegistrar}
+
+preguntaTabla:
+    path:   /preguntaTabla/{preguntaTipoId}
+    defaults: { _controller: GtSistemaBundle:Pregunta:preguntaTabla}
+
+#preguntaTablaClasificacion:
+#    path:   /preguntaTablaClasificacion/{preguntaId}
+#    defaults: { _controller: GtSistemaBundle:Pregunta:preguntaTablaClasificacion}
+
+preguntaTablaActividadClave:
+    path:   /preguntaTablaActividadClave/{competenciaId}/{preguntaId}
+    defaults: { _controller: GtSistemaBundle:Pregunta:preguntaTablaActividadClave}
+
+preguntaTablaAprendizaje:
+    path:   /preguntaTablaAprendizaje/{conocimientoId}/{preguntaId}
+    defaults: { _controller: GtSistemaBundle:Pregunta:preguntaTablaAprendizaje}
+
+conocimientoRegistrar:
+    path:   /conocimientoRegistrar
+    defaults: { _controller: GtSistemaBundle:Conocimiento:conocimientoRegistrar}
+
+conocimientoTabla:
+    path:   /conocimientoTabla
+    defaults: { _controller: GtSistemaBundle:Conocimiento:conocimientoTabla}
+    
+perfilRegistrar:
+    path:   /perfilRegistrar
+    defaults: { _controller: GtSistemaBundle:Perfil:perfilRegistrar}
+
+perfilTabla:
+    path:   /perfilTabla
+    defaults: { _controller: GtSistemaBundle:Perfil:perfilTabla}
+    
+perfilCompetenciaTabla:
+    path:   /perfilCompetenciaTabla/{perfilId}
+    defaults: { _controller: GtSistemaBundle:Perfil:perfilCompetenciaTabla}
+    
+perfilConocimientoTabla:
+    path:   /perfilConocimientoTabla/{perfilId}
+    defaults: { _controller: GtSistemaBundle:Perfil:perfilConocimientoTabla}
+    
+clientePerfilRegistrar:
+    path:   /clientePerfilRegistrar
+    defaults: { _controller: GtSistemaBundle:ClientePerfil:clientePerfilRegistrar}
+
+clientePerfilTabla:
+    path:   /clientePerfilTabla
+    defaults: { _controller: GtSistemaBundle:ClientePerfil:clientePerfilTabla}
+    
+clientePerfilCompetenciaTabla:
+    path:   /clientePerfilCompetenciaTabla/{clientePerfilId}
+    defaults: { _controller: GtSistemaBundle:ClientePerfil:clientePerfilCompetenciaTabla}
+    
+clientePerfilConocimientoTabla:
+    path:   /clientePerfilConocimientoTabla/{clientePerfilId}
+    defaults: { _controller: GtSistemaBundle:ClientePerfil:clientePerfilConocimientoTabla}
+    
+clienteRegistrar:
+    path:   /clienteRegistrar
+    defaults: { _controller: GtSistemaBundle:Cliente:clienteRegistrar}
+
+clienteTabla:
+    path:   /empersaClienteTabla/{empresaId}
+    defaults: { _controller: GtSistemaBundle:Cliente:clienteTabla}
+    
+personaRegistrar:
+    path:   /personaRegistrar
+    defaults: { _controller: GtSistemaBundle:Persona:personaRegistrar}
+    
+personaTabla:
+    path:   /personaTabla
+    defaults: { _controller: GtSistemaBundle:Persona:personaTabla}
+
+clienteCompetenciaRegistrar:
+    path:   /clienteCompetenciaRegistrar
+    defaults: { _controller: GtSistemaBundle:ClienteCompetencia:clienteCompetenciaRegistrar}
+
+clienteCompetenciaTabla:
+    path:   /clienteCompetenciaTabla
+    defaults: { _controller: GtSistemaBundle:ClienteCompetencia:clienteCompetenciaTabla}
+
+clienteConocimientoRegistrar:
+    path:   /clienteConocimientoRegistrar
+    defaults: { _controller: GtSistemaBundle:ClienteConocimiento:clienteConocimientoRegistrar}
+
+clienteConocimientoTabla:
+    path:   /clienteConocimientoTabla
+    defaults: { _controller: GtSistemaBundle:ClienteConocimiento:clienteConocimientoTabla}
+
+clientePreguntaRegistrar:
+    path:   /clientePreguntaRegistrar
+    defaults: { _controller: GtSistemaBundle:ClientePregunta:clientePreguntaRegistrar}
+
+clientePreguntaTabla:
+    path:   /clientePreguntaTabla
+    defaults: { _controller: GtSistemaBundle:ClientePregunta:clientePreguntaTabla}
+
+clientePreguntaTablaActividadClave:
+    path:   /clientePreguntaTablaActividadClave/{competenciaId}/{preguntaId}
+    defaults: { _controller: GtSistemaBundle:ClientePregunta:clientePreguntaTablaActividadClave}
+
+clientePreguntaTablaAprendizaje:
+    path:   /clientePreguntaTablaAprendizaje/{conocimientoId}/{preguntaId}
+    defaults: { _controller: GtSistemaBundle:ClientePregunta:clientePreguntaTablaAprendizaje}
+
+evaluacionRegistrar:
+    path:   /evaluacionRegistrar
+    defaults: { _controller: GtSistemaBundle:Evaluacion:evaluacionRegistrar}
+
+evaluacionTabla:
+    path:   /evaluacionTabla
+    defaults: { _controller: GtSistemaBundle:Evaluacion:evaluacionTabla}
+    
+participanteRegistrar:
+    path:   /participanteRegistrar/{evaluacionId}
+    defaults: { _controller: GtSistemaBundle:Participante:participanteRegistrar}
+
+participanteTabla:
+    path:   /participanteTabla/{evaluacionId}
+    defaults: { _controller: GtSistemaBundle:Participante:participanteTabla}    
+
+evaluacionParticipantes:
+    path:   /evaluacionParticipantes/{evaluacionId}
+    defaults: { _controller: GtSistemaBundle:Evaluacion:evaluacionParticipantes}    
+
+evaluacionParticipantesTabla:
+    path:   /evaluacionParticipantesTabla/{evaluacionId}
+    defaults: { _controller: GtSistemaBundle:Evaluacion:evaluacionParticipantesTabla}    
+
+evaluacionPreguntaCompetencia:
+    path:   /evaluacionPreguntaCompetencia/{participanteId}
+    #path:   /evaluacionPreguntaCompetencia/{evaluacionId}/{participanteId}/{perfilId}
+    #path:   /evaluacionPreguntaCompetencia/{evaluacionId}/{participanteId}/{perfilId}
+    defaults: { _controller: GtSistemaBundle:Evaluacion:evaluacionPreguntaCompetencia}
+    #defaults: { _controller: GtSistemaBundle:Participante:evaluacionPreguntaCompetencia}
+
+evaluacionPreguntaConocimiento:
+    path:   /evaluacionPreguntaConocimiento/{participanteId}
+    defaults: { _controller: GtSistemaBundle:Evaluacion:evaluacionPreguntaConocimiento}   
+    #defaults: { _controller: GtSistemaBundle:Participante:evaluacionPreguntaConocimiento}   
+
+evaluacionPreguntaCompetenciaResumen:
+    path:   /evaluacionPreguntaCompetenciaResumen/{participanteId}
+    defaults: { _controller: GtSistemaBundle:Evaluacion:evaluacionPreguntaCompetenciaResumen}
+
+evaluacionPreguntaConocimientoResumen:
+    path:   /evaluacionPreguntaConocimientoResumen/{participanteId}
+    defaults: { _controller: GtSistemaBundle:Evaluacion:evaluacionPreguntaConocimientoResumen}
+
+
+evaluacionParticipanteListado:
+    path:   /evaluacionParticipanteListado/{evaluacionId}
+    defaults: { _controller: GtSistemaBundle:Participante:evaluacionParticipanteListado}    
+
+evaluacionParticipanteListadoTabla:
+    path:   /evaluacionParticipanteListadoTabla/{evaluacionId}
+    defaults: { _controller: GtSistemaBundle:Participante:participanteTabla}    
+
+evaluacionPersonaTabla:
+    path:   /evaluacionPersonaTabla/{evaluacionId}
+    defaults: { _controller: GtSistemaBundle:Evaluacion:personaTabla}  
+    
+evaluacionParticipanteEvaluar:
+    path:   /evaluacionParticipanteEvaluar/{evaluacionId}/{participanteId}/{perfilId}
+    defaults: { _controller: GtSistemaBundle:Participante:evaluacionParticipanteEvaluar}    
+
+    
+evaluacionParticipanteRegistrar:
+    path:   /evaluacionParticipanteRegistrar/{evaluacionId}/{participanteId}/{perfilId}
+    defaults: { _controller: GtSistemaBundle:Participante:evaluacionParticipanteRegistrar}    
+    
+evaluacionParticipanteEvaluarCompetenciaTabla:
+    path:   /evaluacionParticipanteEvaluarCompetenciaTabla/{evaluacionId}/{participanteId}/{perfilId}
+    defaults: { _controller: GtSistemaBundle:Participante:evaluacionParticipanteEvaluarCompetenciaTabla}    
+    
+evaluacionParticipanteEvaluarConocimientoTabla:
+    path:   /evaluacionParticipanteEvaluarConocimientoTabla/{evaluacionId}/{participanteId}/{perfilId}
+    defaults: { _controller: GtSistemaBundle:Participante:evaluacionParticipanteEvaluarConocimientoTabla}    
+    

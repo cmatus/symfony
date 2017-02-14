@@ -1,0 +1,143 @@
+{% extends 'GtSistemaBundle::basePop.html.twig' %}
+{% block title %} Gestionatalento {% endblock %}
+{#{% block dondeEstoy %}Empresa Cambiar{% endblock %}#}
+
+{% block body %}
+{{ form_start(form) }}
+    <div style="margin: 0px 10px 0px 10px">
+        <div style="margin-top: 10px; margin-bottom: 10px"><b>Seleccione el nivel que tiene la persona en las distintas competencias y conocimientos</b></div>
+        <table id='tblCompetencias' data-classes="table table-condensed" data-toggle="table"  data-height="auto" > 
+            <thead class="bg-info">
+                <tr>
+                    <th>Competencia</th>
+                    <th>Necesita Formacion</th>
+                    <th>En Desarollo</th>
+                    <th>Esta Logrado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for det in form.evaluacionCompetencias %}
+                    <tr>                        
+                        <td>{{ form_widget(det.competenciaId) }} {{ form_widget(det.competenciaNombre) }}</td>
+                        <td>{{ form_widget(det.evaluacionCompetenciaRespuesta[0]) }}</td>
+                        <td>{{ form_widget(det.evaluacionCompetenciaRespuesta[1]) }}</td>
+                        <td>{{ form_widget(det.evaluacionCompetenciaRespuesta[2]) }}</td>                        
+                    </tr>
+                {% endfor %}
+                
+           
+            
+            {#<thead class="bg-info">#}
+                <tr>
+                    <td class="bg-info"><b>Conocimiento</b></td>
+                    <td class="bg-info"><b>Necesita Formacion</b></td>
+                    <td class="bg-info"><b>En Desarollo</b></td>
+                    <td class="bg-info"><b>Esta Logrado</b></td>
+                </tr>
+            {#</thead>#}
+            
+                {% for det in form.evaluacionConocimientos %}
+                    <tr>                        
+                        <td>{{ form_widget(det.conocimientoId) }} {{ form_widget(det.conocimientoNombre) }}</td>
+                        <td>{{ form_widget(det.evaluacionConocimientoRespuesta[0]) }}</td>
+                        <td>{{ form_widget(det.evaluacionConocimientoRespuesta[1]) }}</td>
+                        <td>{{ form_widget(det.evaluacionConocimientoRespuesta[2]) }}</td>                        
+                    </tr>
+                {% endfor %}
+                
+            
+             </tbody>
+        </table>
+        
+    </div>
+
+    
+                     
+                     
+{{ form_rest(form) }}
+{{ form_end(form) }}
+
+{% endblock %}
+
+
+{% block javascript %}   
+
+    <script type="text/javascript">
+
+        //$("#thisform").validate();
+    
+
+
+        function frmSubmit(accion) {
+            
+            var evaluacionId="{{ evaluacionId }}";
+            var participanteId="{{ participanteId }}";
+            var perfilId="{{ perfilId }}";            
+            
+            var parametro = {'evaluacionId':evaluacionId, 'participanteId':participanteId, 'perfilId':perfilId};
+            
+            var url = Routing.generate('evaluacionParticipanteEvaluar',parametro);
+            alert(url);
+            //fncSubmit();
+            //var validator = $( "#thisform" ).validate();
+            //validator.form();
+            {#var myForm = $('#thisform')
+            if (!myForm.checkValidity()) {
+              // If the form is invalid, submit it. The form won't actually submit;
+              // this will just cause the browser to display the native HTML5 error messages.
+              myForm.find(':submit').click()
+            } else {
+                alert("complete la informacion");
+            }#}
+
+            document.thisform.action=url;
+            document.thisform.submit();
+            
+        }
+        
+        function fncSubmit(){
+            
+            var form = $('form')[0];
+            if (form.checkValidity()) {
+                console.log('valid');
+                form.submit();
+            } else {
+                alert("Debe seleccinar todas las respuestas")
+            }
+        } 
+        
+        
+        function stateFormatter(value, row, index) {
+
+            if (row.evaluacionCompetenciaFormacion != "") {
+                return {checked: true};
+            }
+
+            if (row.evaluacionCompetenciaDesarollo != "") {
+                return {checked: true};
+            }
+
+            if (row.evaluacionCompetenciaLogrado != "") {
+                return {checked: true};
+            }
+        {#if (index === 0) {
+            return {
+                 checked: true
+            };
+        }
+        if (index === 1) {
+            return {
+                disabled: true,
+                checked: true
+            }
+        }
+        return value;#}
+            }
+ 
+  {#  $.validate({
+        modules : 'html5'
+    });
+  #}
+
+    </script>
+{% endblock %}

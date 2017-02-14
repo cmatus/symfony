@@ -1,0 +1,141 @@
+{% extends 'GtSistemaBundle::basePop.html.twig' %}
+{% block title %} Gestionatalento {% endblock %}
+{#{% block dondeEstoy %}Empresa Cambiar{% endblock %}#}
+
+{% block body %}
+{{ form_start(form) }}
+    <div style="margin: 0px 10px 0px 10px">
+        
+        <div style="margin-top: 10px; margin-bottom: 10px"><b>Seleccione en nivel</b></div>         
+             <table data-classes="table table-condensed"                   
+                    data-toggle="table" data-height="85" >    
+                {% for det1 in form.evaluacionConocimientos %}
+                   
+                   
+                  <thead class="bg-info">
+                        <tr>
+
+                        <td colspan="4"><b>Conocimiento:</b>{{ form_widget(det1.conocimientoId) }}   {{ form_widget(det1.conocimientoNombre) }}</td>
+                        </tr> 
+                        <tr>
+                            <td><i>Resumen conocimiento</i></td>
+                            <td><b>Conocimiento</b></td>
+                            <td><b>Ejecucion</b></td>
+                            <td><b>Aplicacion</b></td>  
+                        </tr>
+                  </thead>
+                  <tbody>
+                  {#    <tr>
+                          <td >Resumen competencia</td>
+                      </tr>    #}
+{#                  </tbody>#}
+{#                 </table>  #}
+                            
+           {# <table id='tblPreguntas' data-classes="table table-condensed" 
+                   data-toggle="table" > 
+                <thead class="bg-info">#}
+                    {#<tr>
+                        
+                        <td>Conocimiento</td>
+                        <td>Ejecucion</td>
+                        <td>Aplicacion</td>                        
+                    </tr>#}
+                {#</thead>#}
+{#                <tbody>#}
+                    
+                        {% for det in det1.evaluacionPreguntas %}
+                            <tr>                        
+                                <td>{{ form_widget(det.preguntaId) }} {{ form_widget(det.preguntaNombre) }}</td>
+                                <td>{{ form_widget(det.evaluacionPreguntaConocimientoRespuesta[0]) }}</td>
+                                <td>{{ form_widget(det.evaluacionPreguntaConocimientoRespuesta[1]) }}</td>
+                                <td>{{ form_widget(det.evaluacionPreguntaConocimientoRespuesta[2]) }}</td>
+                            </tr>
+                        {% endfor %}
+                    
+                </tbody>
+            
+                            
+                          {% endfor %}
+                
+            </table>                                   
+                        
+        
+        
+        {#{% if preguntaTipoId=="2" %}            
+            <table id='tblPreguntas' data-classes="table table-condensed" 
+                   data-toggle="table"  data-height="200" > 
+                <thead class="bg-info">
+                    <tr>
+                        <th>Pregunta</th>
+                        <th>Conocimiento</th>
+                        <th>Ejecucion</th>
+                        <th>Aplicacion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for det in form.evaluacionPreguntas %}
+                        <tr>                        
+                            <td>{{ form_widget(det.preguntaId) }} {{ form_widget(det.preguntaNombre) }}</td>
+                            <td>{{ form_widget(det.evaluacionPreguntaRespuesta[0]) }}</td>
+                            <td>{{ form_widget(det.evaluacionPreguntaRespuesta[1]) }}</td>
+                            <td>{{ form_widget(det.evaluacionPreguntaRespuesta[2]) }}</td>                        
+                        </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        {% endif %}#}
+    </div>
+   {# <button type="button" class="btn btn-primary" onclick="frmSubmit('0')" ><< Atras </button>
+    <button type="button" class="btn btn-primary" onclick="frmSubmit('3')" >Paso 2 de 3 >> Siguiente</button>#}
+                     
+                     
+{{ form_rest(form) }}
+{{ form_end(form) }}
+
+{% endblock %}
+
+
+{% block javascript %}   
+
+    <script type="text/javascript">
+
+        function frmSubmit(accion) {
+
+            var evaluacionId="{{ evaluacionId }}";
+            var participanteId="{{ participanteId }}";
+            var perfilId="{{ perfilId }}";            
+         
+                    
+            switch (accion) {
+                case "1":   
+                    alert("acaaa");
+                    var parametro = {'evaluacionId':evaluacionId, 
+                                    'participanteId':participanteId, 
+                                    'perfilId':perfilId};
+                    
+                    var url = Routing.generate('evaluacionPreguntaCompetencia',parametro);                
+                    //evaluacionParticipanteEvaluar/{evaluacionId}/{participanteId}/{perfilId}
+                    //document.thisform.method = "GET";
+                    document.location.href=url;
+                    //document.thisform.submit();
+                    break;
+                case "3":
+
+
+                    var parametro = {'evaluacionId':evaluacionId, 
+                                    'participanteId':participanteId, 
+                                    'perfilId':perfilId};
+
+                    var url = Routing.generate('evaluacionPreguntaConocimiento',parametro);
+                    document.thisform.action=url;
+                    document.thisform.submit();
+                    break;
+            }
+            
+            
+            
+        }
+                        
+    </script>
+{% endblock %}
