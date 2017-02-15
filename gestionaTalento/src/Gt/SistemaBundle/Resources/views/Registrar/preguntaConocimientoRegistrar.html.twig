@@ -1,0 +1,266 @@
+{% extends 'GtSistemaBundle::basePop.html.twig' %}
+{% block title %} Gestionatalento {% endblock %}
+{#{% block dondeEstoy %}Empresa Cambiar{% endblock %}#}
+
+{% block body %}
+
+     <div id="container">     
+         <form {{ form_enctype(form) }} method="POST" onsubmit="return onSubmit()" action="#">
+
+
+        {{ form_widget(form.id) }}
+        {{ form_errors(form.id) }}
+        {#                    {{ form_widget(form.empresaId) }}
+                            {{ form_errors(form.empresaId) }}#}
+
+
+        
+        {% for flashMessage in app.session.flashbag.get('notice') %}
+                <div class="flash-notice">                              
+                    <div class="alert alert-success alert-dismissible" role="alert" >
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close" ><span aria-hidden="true">&times;</span></button>
+                        {{ flashMessage }}
+
+                        {% set guardado=true %}
+                        </div>
+                    </div>
+        {% endfor %}
+                            
+                            
+        {#<div class="input-group" >#}
+        {#<div class="row">
+            <div class="col-md-12">
+                <div class="control-group form-horizontal">
+                    <div class="form-group">#}
+                        {#<div class="col-md-3 control-label" style="padding-right: 0px; padding-left: 0px;"><b>Nombre del Tour</b></div>#}
+                        <p>
+                        <label>Pregunta Asociada a                       
+                           
+                                <font color="red">Conocimiento</font>
+                           
+                        </label>                                                                           
+                        </p>
+                        {#</div>
+                    </div>
+                </div>    
+            </div>
+        </div>#}
+
+
+
+      
+
+        
+            <div id="dvConocimiento">
+            <p>
+                <label for="preguntaConocimiento">Conocimiento</label> 
+                {{ form_widget(form.conocimientoId) }} 
+                {{ form_errors(form.conocimientoId) }}  
+            </p>
+            <p>
+
+
+            <table id="tableAprendizaje" data-height="150" data-show-header="true" data-checkbox-header="false">
+                <thead class="bg-info">
+                    <tr>                                                                
+                        <th data-field="preguntaAprendizajeAsociada" data-checkbox="true" data-formatter="stateFormatter" ></th>
+                        <th data-field="id" data-visible="false"></th>
+                        <th data-field="aprendizajeNombre" data-sortable="true" data-width="700">Aprendizaje</th>
+                    </tr>                                
+                </thead>        
+            </table>
+            </p>
+            <input type="hidden" name="tbxAprendizajeIds" id="tbxAprendizajeIds" >
+        </div>
+
+       
+        <p>
+            <label for="preguntaNombre">Pregunta</label>    
+            {#<input type="text" id="tbxPerfilNombre" class="form-control input-sm" placeholder="Ingrese nombre">  #}
+            {#{{ render_label(form.preguntaNombre, 'Your name') }}#}
+            {{ form_widget(form.preguntaConocimientoNombre) }} 
+            {{ form_errors(form.preguntaConocimientoNombre) }}
+        </p>
+
+        
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary" >Guardar Pregunta</button>
+        </div>
+
+
+        {{ form_rest(form) }}
+       </form>
+
+
+
+        {% block javascript %}   
+
+            <script type="text/javascript">
+
+                var preguntaId = "{{preguntaId}}";
+                var preguntaTipoId = "{{preguntaTipoId}}";
+                var conocimientoId = "{{conocimientoId}}";
+                
+
+                getRows2 = function() {
+                    var rows = [];
+
+                    for (var i = 0; i < 0; i++) {
+                        rows.push({
+                            xxx: '',
+                            xxx2: '',
+                        });
+                        id++;
+                    }
+                    return rows;
+                }
+
+                function onSubmit() {
+                           
+
+
+                    //var url = Routing.generate('reserva', parametros);
+                    //alert(url);
+                    var form = $('form')[0];
+                    if (form.checkValidity()) {
+                        console.log('valid');
+
+                        //form.action = url;
+                        //form.submit();
+                        frmSubmit();
+                    }
+                    //form.submit();
+
+                    return false;
+                }
+                        
+
+                $(document).ready(function() {
+
+
+
+                    $('#tableAprendizaje').bootstrapTable('destroy');
+                    $('#tableAprendizaje').bootstrapTable('showLoading');
+                    $('#tableAprendizaje').bootstrapTable({data: getRows2()});
+
+                 
+
+                    $('#tableAprendizaje').bootstrapTable('destroy');
+                    $table = $('#tableAprendizaje').bootstrapTable({
+                        data: getRows2()
+                    });
+
+                    if (conocimientoId!="0") {
+                        $('#formPreguntaConocimiento_conocimientoId').val(conocimientoId)
+                    }
+
+                    //Buscamos los aprendizajes asociados al conocimiento
+                    var parametro = {'conocimientoId': conocimientoId, 'preguntaId': preguntaId};
+                    $('#tableAprendizaje').bootstrapTable('showLoading');
+                    var url = Routing.generate('preguntaTablaAprendizaje', parametro);
+                    alert(conocimientoId + " " +url);
+                    $.ajax({
+                        url: url,
+                        type: 'post',
+                        dataType: 'json',
+                        success: function(respuesta) {
+                            $('#tableAprendizaje').bootstrapTable('destroy');
+                            $('#tableAprendizaje').bootstrapTable({data: respuesta});
+                        },
+                        // código a ejecutar si la petición falla;
+                        error: function(xhr, status) {
+                            alert('Disculpe, existió un problema');
+                        },
+                    });
+
+                           
+
+                   
+                    $('#formPreguntaConocimiento_conocimientoId').on('change', function() {
+                        conocimientoId = $(this).val();
+                        if (parseInt(conocimientoId) > 0) {
+                            var parametro = {'conocimientoId': conocimientoId, 'preguntaId': preguntaId};
+                            $('#tableAprendizaje').bootstrapTable('showLoading');
+                            var url = Routing.generate('preguntaTablaAprendizaje', parametro);
+                            //alert("'" + url + "'");
+
+                            // html = "<div class='input-group'><span class='input-group-addon' id='basic-addon2'>1</span><input type='text' class='form-control' placeholder='Ingrese Conocimiento' aria-describedby='basic-addon2'></div>";
+                            $.ajax({
+                                // la URL para la petición
+
+                                url: url,
+                                // la información a enviar
+                                //data : { 'fac' : <?php echo $dato['factura']; ?> },
+                                // especifica si será una petición POST o GET
+                                type: 'post',
+                                // el tipo de información que se espera de respuesta
+                                dataType: 'json',
+                                // código a ejecutar si la petición es satisfactoria;
+
+                                success: function(respuesta) {
+
+                                    $('#tableAprendizaje').bootstrapTable('destroy');
+
+                                    $('#tableAprendizaje').bootstrapTable({data: respuesta});
+
+                                },
+                                // código a ejecutar si la petición falla;
+                                error: function(xhr, status) {
+                                    alert('Disculpe, existió un problema');
+                                },
+                            });
+                        } else {
+                            $('#tableAprendizaje').bootstrapTable('destroy');
+                            $table = $('#tableAprendizaje').bootstrapTable({
+                                data: getRows2()
+                            });
+                        }
+                    });
+
+
+                });
+
+
+                function stateFormatter(value, row, index) {
+
+                    if (row.preguntaAprendizajeAsociada == "1") {
+                        return {checked: true};
+                    }
+                }
+
+               
+
+                      function frmSubmit() {
+
+                        //alert(JSON.stringify($("#tableAprendizaje").bootstrapTable('getSelections')));
+                        var preguntaTipoId = '{{preguntaTipoId}}'; //document.getElementById("formPreguntaConocimiento_preguntaTipoId").value;
+                         
+                        var data = JSON.stringify($("#tableAprendizaje").bootstrapTable('getSelections')) // '{"0":"1","1":"2","2":"3","3":"4"}';
+                         
+
+                        var json = JSON.parse(data);
+
+                          var arr = [];
+                          var ids = "";
+                          for (var row in json) {
+                              //alert(json[row]["id"]);
+                              ids += json[row]["id"] + ",";
+                          }
+                          
+                        
+                        document.getElementById("tbxAprendizajeIds").value = ids;
+                        
+                        var url = Routing.generate('conocimientoRegistrar');
+                        document.formPreguntaConocimiento.action=url;
+                        document.formPreguntaConocimiento.submit();
+                      }
+
+
+
+
+            </script>        
+        {% endblock %}
+
+    {% endblock %}
+

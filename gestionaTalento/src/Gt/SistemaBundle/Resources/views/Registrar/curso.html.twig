@@ -1,0 +1,312 @@
+{% extends 'GtSistemaBundle::basePop.html.twig' %}
+{% block title %} Gestionatalento {% endblock %}
+{#{% block dondeEstoy %}Empresa Cambiar{% endblock %}#}
+
+{% block body %}
+
+    <style>
+        .popover-footer{
+            padding: 6px 14px;
+            background-color: #f7f7f7;
+            border-top: 1px solid #ebebeb;
+            text-align: right;
+        }
+    </style>
+        
+
+
+<div class="container-fluid">
+    
+{% for flashMessage in app.session.flashbag.get('notice') %}
+        <div class="flash-notice">                              
+            <div class="alert alert-success alert-dismissible" role="alert" style="padding-bottom:0px; padding-top: 0px; margin-bottom: 3px">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" ><span aria-hidden="true">&times;</span></button>
+                {{ flashMessage }}
+                {% set guardado=true %}
+            </div>                               
+        </div>
+    {% endfor %}
+        
+        
+                <div id="custom-toolbar">
+
+                    
+                    <button id='btnCuentaBancoNuevo' type="button" class="btn btn-sm btn-primary " onclick="formAccion(1,'0')">
+                        Nuevo Curso
+                    </button>
+              </div>
+                                
+                <table id='tblCurso' data-classes="table table-condensed" 
+                       data-toggle="table" 
+                       data-cache="false" 
+                       data-height="450" 
+                       data-striped="true"  
+                       data-pagination="true"
+                       data-search="true" 
+                       data-show-refresh="true"
+                       data-toolbar="#custom-toolbar"
+                       data-show-export="true" exportTypes="['excel', 'txt', 'csv']"
+                       data-url="{{path('maestroTabla', {'maeTipoId': maeTipoId})}}">
+                    
+                    <thead>
+                    <tr>
+                        <th data-field="id" data-sortable="true" data-visible="false">#</th>                        
+                        <th data-formatter="opciones" data-events="operateEvents">Opciones</th>
+                        <th data-field="cursoCodigo" data-sortable="true">Codigo</th>
+                        <th data-field="cursoNombre" data-sortable="true">Nombre Curso</th>
+                        <th data-field="cursoObjetivo" data-width="600">Objetivo</th>                        
+                    </tr>
+                    </thead>                    
+                </table>               
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Modal title</h4>
+                </div>
+                <div class="modal-body" id="myModal2Body">                
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div> <!-- /.modal-content -->
+        </div> <!-- /.modal-dialog -->
+    </div> <!-- /.modal -->
+
+
+    <!-- start: Delete Coupon Modal -->
+    <div class="modal fade" id="winBorrar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                     <h3 class="modal-title" id="myModaBorrarlLabel">Atencion!</h3>
+
+                </div>
+                <div class="modal-body" id="myModalBodyBorrar">
+                     <h4> Esta seguro de borrar?</h4>
+                     {#<input type="hidden" name="tbxIdCurso" id="tbxIdCurso">#}
+                </div>
+                <!--/modal-body-collapse -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="btnConfirmaBorrar" onclick="formAccion(2)">Si</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                </div>
+                <!--/modal-footer-collapse -->
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+
+    
+    <form id="thisform" name="thisform" method="post">
+        <input type="hidden" name="maeRegistroId" id="maeRegistroId">
+    </form>
+    
+  
+{#{{ form_rest(form) }}
+{{ form_end(form) }}  #}                  
+
+    </div>
+{% endblock %}
+
+
+
+{% block javascript %}   
+
+    <script type="text/javascript">
+        
+        function frmBorrar() {            
+            //var objPanelFiltroAno = document.querySelector("#panelFiltroAno");            
+            var idCurso= document.getElementById("tbxIdCurso").value ;                        
+            url = Routing.generate('cursoRegistrar');
+            document.thisform.action=url
+            document.thisform.submit();            
+        }
+            
+        function opcionesInfo(value, row, index) {
+            return ['<button id="btnInfo',index,'" name="btnInfo',index,'" type="button" class="info btn btn-info btn-xs" style="margin-top:3px;margin-bottom:3px;" data-toggle="popover"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></button>'].join('');
+        }
+        
+        function opciones(value, row, index) {
+            return [
+                '<div class="btn-group" role="group"><button type="button" class="modificar btn btn-xs btn-default" ><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>',
+                '<button type="button" class="borrar btn btn-xs btn-default" ><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>',
+                '</div>'
+            ].join('');
+            
+            //'<button id="btnModificar" name="btnModificar" type="button" class="btn btn-link btn-xs">Modificar</button>',
+            //'<button id="btnBorrar" name="btnBorrar" type="button" class="btn btn-link btn-xs">Borrar</button>&nbsp;',
+        }        
+        
+        function operateFormatter(value, row, index) {
+            return [
+                '<button id="btnActividadClave" name="btnActividadClave" type="button" class="actividad btn btn-info btn-xs" style="margin-top:3px;margin-bottom:3px;">Actvidades Conductuales <span class="badge">0</span></button>',                
+            ].join('');
+        }
+
+    window.operateEvents = {
+        
+        'click .info': function (e, value, row, index) {                
+                info(row, index);
+            },
+            
+            
+        'click .modificar': function (e, value, row, index) {
+            //alert('You click modificar icon, row: ' + JSON.stringify(row));
+            //console.log(value, row, index);            
+            formAccion(1, row.id);
+            
+            {#$('#myModal').data('registro', {id: row.id, 
+                                            cursoNombre: row.cursoNombre, 
+                                            cursoDefinicion: row.cursoDefinicion }).modal('show');#}
+        },
+        'click .borrar': function (e, value, row, index) {
+            
+            $('#winBorrar').modal('show');
+            $("#maeRegistroId").val(row.id);
+            
+            //$('#myModalBorrar').data('id', row.id).modal('show');
+            //alert('You click borrar icon, row: ' + JSON.stringify(row));
+            //console.log(value, row, index);
+        },
+        'click .remove': function (e, value, row, index) {
+            alert('You click remove icon, row: ' + JSON.stringify(row));
+            console.log(value, row, index);
+        },
+        
+        'click .actividad': function (e, value, row, index) {
+            
+        
+            objParametros = [{'cursoId': row.id}];
+            var jsnParametros = JSON.stringify(objParametros);
+            mae("4", '', jsnParametros);
+            
+            //actividadClaveRegistrar( row.id)
+        }                                
+    };
+                
+        var wins;
+        var wins2;
+        var winId;
+        function formAccion(accionId, maeRegistroId) {                                    
+            
+            objParametros= [{
+                            'maeTipoId': '{{maeTipoId}}',
+                            'maeNombre': 'curso',                                    
+                            'winParent': '{{winParent}}',   
+                            'entityId':maeRegistroId                           
+                            }];
+                                                                    
+            var jsnParametros = JSON.stringify(objParametros);
+            
+            var parametros={'maeParametros': jsnParametros};
+                    
+            switch (accionId) {
+                case 1:
+                    var url=Routing.generate('maestroRegistrar', parametros);
+                    
+                    wins2 = new dhtmlXWindows();
+                    skin="dhx_skyblue";
+                    wins2.setSkin(skin);
+                    
+                    winId="winCursoRegistrar";
+                    
+                    wins2.createWindow(winId, 1, 1, 780, 530);
+                    wins2.window(winId).setText("Curso");
+            
+                    wins2.window(winId).setModal(true);
+                    wins2.window(winId).button("minmax").disable();                   
+                    wins2.window(winId).centerOnScreen();                   
+                    wins2.window(winId).progressOn();
+                   
+                    wins2.window(winId).setIconCss("without_icon");
+
+                    //var jsnParametros = JSON.stringify(maeParametros);
+                    //var urlParametros={'maeTipoId':maeTipoId, 'winParent': winParent, 'maeParametros': maeParametros};
+                    //var url = Routing.generate('maestro', urlParametros);
+                    wins2.window(winId).attachURL(url);
+
+                    wins2.window(winId).attachEvent("onContentLoaded", function(id){
+                       //alert(id.id);
+                       id.progressOff();        
+                       var ifr = id.getFrame();
+                       ifr.contentWindow.wins=wins;
+                       //ifr.contentWindow.winParent=winParent;
+                       //alert(ifr.contentWindow.winParent);
+                    });     
+
+                    //document.location.href=url;
+                    break
+                case 2:
+                    window.parent.winProgress(wins,"winCurso", 1); 
+                    var url=Routing.generate('maestroBorrar', parametros);
+                    var form = $('form')[0];                   
+                    
+                    form.action=url;
+                    form.submit();
+                    break;
+            }
+        }
+
+       
+
+
+        function cerrar() {
+            winId="winCursoRegistrar";
+            wins2.window(winId).close();
+        }
+        
+        function progress() {
+            winId="winCursoRegistrar";
+            wins2.window(winId).progressOn();
+        }
+        
+        function refreshTabla() {
+            //alert("aca");
+            var $table = $('#tblCurso');
+            $table.bootstrapTable('refresh');
+        }
+        
+        
+        function info(row, index) {
+                                    
+            var objBtnInfo='#btnInfo'+index;
+            //alert($(objBtnInfo).attr('id'));
+            var cursoNombre=row.cursoNombre;
+            var cursoDefinicion=row.cursoDefinicion;
+                     
+            $(objBtnInfo).popover({
+            //$('#btnEntidadCont=actoHabilitadoInfo').popover({                
+                title: cursoNombre,
+                content: [  "<table>",
+                                "<tr><td><b>Definición:<b></td></tr><tr><td>" +  cursoDefinicion + "</td></tr>",
+                            "</table>"
+                            ].join(''),
+                html: true,
+                template: '<div class="popover"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div><div class="popover-footer"><a href="#" class="btn btn-info btn-sm">Cerrar</a></div></div>',
+                placement: 'left',
+                container: 'body',
+                trigger: 'focus'
+            });
+
+            //$("#btnEntidadContactoHabilitadoInfo").popover('toggle');
+            $(objBtnInfo).popover('toggle');
+
+        }
+                
+    </script>
+                        
+    <script src="{{ asset('js/mae/maeFunciones.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/comFunciones.js') }}" type="text/javascript"></script>
+    
+{% endblock %}
+

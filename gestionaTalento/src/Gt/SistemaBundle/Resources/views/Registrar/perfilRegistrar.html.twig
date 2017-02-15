@@ -1,0 +1,380 @@
+{% extends 'GtSistemaBundle::basePop.html.twig' %}
+
+{% block body %}
+
+    <style>
+        .popover-footer{
+            padding: 6px 14px;
+            background-color: #f7f7f7;
+            border-top: 1px solid #ebebeb;
+            text-align: right;
+        }
+                          
+        .bootstrap-table .table,
+        .bootstrap-table .table > tbody > tr > th,
+        .bootstrap-table .table > tfoot > tr > th,            
+        .bootstrap-table .table > tbody > tr > td,
+        .bootstrap-table .table > tfoot > tr > td {            
+            padding: 2px !important;
+            vertical-align: top;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            //white-space: nowrap;
+            font-size:11.5px;
+           
+        }
+        
+        .fixed-table-container thead th .th-inner {
+            padding: 2px !important;        
+            font-size:12px;
+        }
+        
+        #editorObj {
+                width: 100%;
+                height: 100px;
+                border: 1px solid #a4bed4;
+        }
+                 
+        
+		div#layoutObj {
+			position: relative;
+			margin-top: 20px;
+			margin-left: 20px;
+			width: 600px;
+			height: 400px;
+		}
+	
+                
+    </style>
+
+
+    <form {{ form_enctype(form) }} method="POST" action="#" >
+
+    {{ form_errors(form) }}
+
+    {% set guardado=false %}
+
+        {% for flashMessage in app.session.flashbag.get('notice') %}
+            <div class="flash-notice">                              
+                <div class="alert alert-success alert-dismissible" role="alert" style="padding-bottom:0px; padding-top: 0px; margin-bottom: 3px">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" ><span aria-hidden="true">&times;</span></button>
+                    {{ flashMessage }}
+                    {% set guardado=true %}
+                </div>                               
+            </div>
+        {% endfor %}
+
+                    {# <ol class="breadcrumb">
+                       <li><a href="#">Clientes</a></li>                      
+                       <li class="active">Nuevo</li>
+                     </ol>#}
+
+                    
+                   
+                    <div class="container-fluid">
+
+          {#  <div class="panel panel-primary" style="margin:0px; padding: 0px;">
+                <div class="panel-heading" style=" height: 20px; padding-top: 0px;">                    
+                    Datos básicos curso                
+                </div>
+                <div class="panel-body" style="padding: 4px" >#}
+
+    
+                <div id="dvDatosCargo">    
+                    {{ form_widget(form.id) }}
+                    {{ form_errors(form.id) }}
+                    {#<p>
+                    <label for="tbxPerfilCodigo">Codigo Perfil</label><br>
+                    {{ form_widget(form.perfilCodigo) }} 
+                    {{ form_errors(form.perfilCodigo) }}
+                    </p>#}
+                    <p>
+                       <label for="tbxPerfilNombre">Nombre del Cargo</label>                           
+                       {{ form_widget(form.perfilNombre) }} 
+                       {{ form_errors(form.perfilNombre) }}
+                    </p>
+                    <p>
+                        <label for="tbxPerfilDefinicion">Objetivo del Cargo</label>                        
+                        {{ form_widget(form.perfilObjetivo) }} 
+                        {{ form_errors(form.perfilObjetivo) }}
+                    </p>
+                    <p>
+                       <label for="tbxPerfilNombre">Reporta a:</label>    
+                       {{ form_widget(form.perfilReporta) }} 
+                       {{ form_errors(form.perfilReporta) }}
+                    </p>
+                </div>
+ <label >Tareas o Responsabilidades</label>  
+ {#<div id="editorObj" style="width:100%; height:200px; border:#909090 1px solid;"></div>#}
+ 
+{{ form_widget(form.perfilTareas) }} 
+{{ form_errors(form.perfilTareas) }}
+ 
+ <label >UCL's y Competencias Conductuales</label>  
+ 
+ <table style=""><tr><td>
+                    {#<label>Competencias</label>#}
+                    
+                        <table id="tblCompetencia"
+                               data-toggle="table" 
+                               data-cache="false" 
+                               data-height="200" 
+                               data-show-header="true" 
+                               data-checkbox-header="false"
+                               data-url="{{path('perfilCompetenciaTabla', {'perfilId': perfilId})}}">
+                            <thead class="bg-info">
+                                <tr>                                                                
+                                    <th data-field="perfilCompetenciaAsociada" data-checkbox="true" data-formatter="stateFormatter" ></th>
+                                    <th data-field="id" data-visible="false" ></th>
+                                    <th data-field="competenciaCodigo" data-sortable="true" data-visible="false" data-width="100">Codigo</th>
+                                    <th data-field="competenciaNombre" data-sortable="true" data-width="330">UCL</th>
+                                </tr>                                
+                            </thead>                         
+                        </table>
+                        <input type="hidden" name="tbxCompetenciaIds" id="tbxCompetenciaIds" >
+                            </td><td>&nbsp;</td><td>
+                           
+                           
+                               {#<label>Conocimientos</label>#}
+                                <table id="tblConocimiento" 
+                                       data-toggle="table" 
+                                        data-cache="false"
+                                       data-height="200" 
+                                       data-show-header="true" 
+                                       data-checkbox-header="false"
+                                       data-url="{{path('perfilConocimientoTabla', {'perfilId': perfilId})}}">
+                            <thead class="bg-info">
+                                <tr>                                                                
+                                    <th data-field="perfilConocimientoAsociada" data-checkbox="true" data-formatter="stateFormatter" ></th>
+                                    <th data-field="id" data-visible="false" ></th>
+                                    <th data-field="conocimientoCodigo" data-sortable="true" data-visible="false" data-width="100">Codigo</th>
+                                    <th data-field="conocimientoNombre" data-sortable="true" data-width="330">Competencia</th>
+                                </tr>                                
+                            </thead>                         
+                        </table>
+                        <input type="hidden" name="tbxConocimientoIds" id="tbxConocimientoIds" >
+                            </td>
+                        </tr>
+                    </table>
+                            
+                            
+                    
+                       
+                    
+                      
+
+               {# </div>    
+            </div>#}
+  
+
+               <br>
+               <div style="float:right">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal" onclick="parent.cerrar()">Cerrar</button>
+                {% if guardado %}
+                    <button type="button" id="btnOtro" name="btnOtro" class="btn btn-sm btn-primary" onclick="formAccion(1, '0')">Agregar Otro</button>
+                    <script type="text/javascript">
+                        window.parent.refreshTabla();
+                    </script>
+
+                {% endif %}
+                <button type="submit" id="btnGuardar" name="btnGuardar" class="btn btn-sm btn-primary">Guardar</button>
+               </div>
+               
+                        </div>
+                       
+
+
+
+{{ form_rest(form) }}
+</form>
+{% endblock %}
+
+    {% block javascript %} 
+        <script type="text/javascript">
+            var wins;
+            
+            
+            $( "form" ).submit(function( event ) {
+                try{                  
+                        var form = $('form')[0];
+                        if (form.checkValidity()) {
+                            //winFac.progressOn();
+                            console.log('valid');
+                            var  perfilId="{{perfilId}}";
+                            var data = JSON.stringify($("#tblCompetencia").bootstrapTable('getSelections')) 
+                            var json = JSON.parse(data);
+                            var arr = [];
+                            var ids="";
+                            for(var row in json){               
+                                //alert(json[row]["id"]);
+                                ids+=json[row]["id"]+",";
+                            }
+                            
+                            document.getElementById("tbxCompetenciaIds").value=ids;
+                            
+                            var data = JSON.stringify($("#tblConocimiento").bootstrapTable('getSelections')) 
+                            var json = JSON.parse(data);
+                            var arr = [];
+                            var ids="";
+                            for(var row in json){               
+                                //alert(json[row]["id"]);
+                                ids+=json[row]["id"]+",";
+                            }
+                            
+                            document.getElementById("tbxConocimientoIds").value=ids;
+                           
+                            url=Routing.generate('perfilRegistrar', {'perfilId': perfilId});
+                            form.action=url;
+                            form.submit();
+                            
+                        } else {
+                            //alert(form.checkValidity());
+                            //$( "#btnTimbrar" ).trigger( "click" );
+                        }
+                        
+                    /*if ( $( "input:first" ).val() === "correct" ) {
+                      $( "span" ).text( "Validated..." ).show();
+                      return;
+                    }
+
+                    $( "span" ).text( "Not valid!" ).show().fadeOut( 1000 );*/
+                    event.preventDefault();
+
+                } catch(err) {
+                    alert("Error" + err.description)
+                    event.preventDefault();
+                }
+
+              });
+                                  
+                                  
+                                  
+            function formAccion(accionId, maeRegistroId) {
+                objParametros = [{
+                                 
+                    }];
+
+                var jsnParametros = JSON.stringify(objParametros);
+                
+                var parametros = {'maeParametros': jsnParametros};
+
+                switch (accionId) {
+                    case 1:
+                        window.parent.winProgress(wins, "winPersonaRegistrar", 1);
+                        var url = Routing.generate('maestroRegistrar', parametros);
+                        document.location.href = url;
+                        break
+                    case 2:
+                        var form = $('form')[0];
+                        if (form.checkValidity()) {
+                            window.parent.progress(); //winProgress(wins, "winPersonaRegistrar", 1);
+                            console.log('valid');
+                                                        
+                            var data = JSON.stringify($("#tblCompetencia").bootstrapTable('getSelections')) 
+                            var json = JSON.parse(data);
+                            var arr = [];
+                            var ids="";
+                            for(var row in json){               
+                                //alert(json[row]["id"]);
+                                ids+=json[row]["id"]+",";
+                            }
+                            document.getElementById("tbxCompetenciaIds").value=ids;
+                            
+                            var data = JSON.stringify($("#tblConocimiento").bootstrapTable('getSelections')) 
+                            var json = JSON.parse(data);
+                            var arr = [];
+                            var ids="";
+                            for(var row in json){               
+                                //alert(json[row]["id"]);
+                                ids+=json[row]["id"]+",";
+                            }
+                            document.getElementById("tbxConocimientoIds").value=ids;
+
+
+                            var url = Routing.generate('maestroRegistrar', parametros);
+                            form.action=url;
+                            form.submit();
+                        }
+                }
+
+            }
+            
+            function stateFormatter(value, row, index) {
+            
+                if (row.perfilCompetenciaAsociada=="1") {
+                    return { checked: true };
+                }
+
+                if (row.perfilConocimientoAsociada=="1") {
+                    return { checked: true };
+                }                    
+            }
+      
+      
+      
+            var myEditor;
+            
+            function doOnLoad() {
+                   //alert("aca 3");
+                    var myEditorSkin = "dhx_skyblue";
+                    myEditor = new dhtmlXEditor({
+                            parent: "editorObj",
+                            toolbar: true, // force dhtmlxToolbar using
+                            iconsPath: "{{ asset('css/skins/skyblue/imgs') }}", // path for toolbar icons
+                            skin: myEditorSkin,
+                            content: 'xxxxxx'
+                    });
+            }
+            
+            
+            	{#var iconsPath = {
+			dhx_skyblue: "imgs",
+			dhx_web: "icons_web",
+			dhx_terrace: "icons_terrace"
+		};#}
+		
+		function doOnLoadLayout() {
+			
+			skin = "dhx_terrace";
+												
+			myLayout = new dhtmlXLayoutObject({
+				parent: "layoutObj",
+				pattern: "4J",
+				skin: skin,
+				cells: [{id: "a", header: true}]
+			});
+			
+                        myLayout.cells("a").setText("Descriptor de Cargo");
+                        myLayout.cells("b").setText("Tareas o Responsabilidades");
+                        myLayout.cells("c").setText("Competencias");
+                        myLayout.cells("d").setText("Conocimientos");
+                        
+                        myEditor = myLayout.cells("b").attachEditor({ toolbar: true, // force dhtmlxToolbar using
+                            iconsPath: "{{ asset('css/skins/tarrace/imgs') }}", // path for toolbar icons
+                            skin: skin});
+                        
+			//						
+                        
+                        myLayout.cells("a").appendObject("dvDatosCargo");
+			//myLayout.cells("c").appendObject("tblCompetencia");
+                        //myLayout.cells("d").appendObject("tblConocimiento");
+                        
+                        myLayout.attachStatusBar({text: "Status bar can be here"});
+                        
+                        
+		}
+                
+                
+                
+            $( document ).ready(function() {
+                //doOnLoad();
+                //doOnLoadLayout();
+            });
+            
+                
+        </script>  
+
+        <script src="{{ asset('js/mae/maeFunciones.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('js/comFunciones.js') }}" type="text/javascript"></script>
+
+    {% endblock %}    

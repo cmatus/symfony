@@ -1,0 +1,330 @@
+{% extends 'GtSistemaBundle::base.html.twig' %}
+{% block title %} Gestionatalento {% endblock %}
+{#{% block dondeEstoy %}Empresa Cambiar{% endblock %}#}
+
+{% block body %}
+
+    {#<div class="container"> #}
+{#        <div class="center-block" >#}
+
+
+    <div class="container">     
+{#{{ form_start(form) }}#}
+
+           
+<div class="center-block" >    
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Participantes Evaluacion</h3>
+            </div>
+            <div class="panel-body"  >
+      
+              {#  <div id="custom-toolbar2">
+                    <button id='btnPersona' type="button" class="btn btn-primary" data-toggle="modal" data-target="#vtnPersona">
+                        Nueva Persona
+                    </button> 
+                    
+                    <button id='btnPersonaImportar' type="button" class="btn btn-primary" data-toggle="modal" data-target="#vtnPersona">
+                        Importar
+                    </button>                                         
+                </div>#}
+               
+                <table id='tblPersona' data-classes="table table-condensed" 
+                       data-toggle="table" 
+                       data-cache="false" 
+                       data-height="340" 
+                       data-striped="true"  
+                       data-pagination="true"
+                       data-search="true" 
+                       data-show-refresh="true"
+                       {#data-toolbar="#custom-toolbar2"#}
+                       data-url="{{path('evaluacionParticipanteListadoTabla', {'evaluacionId': evaluacionId })}}"
+                       data-show-export="true" exportTypes="['excel', 'txt', 'csv']">
+                    <thead>
+                    <tr>
+                        <th data-field="id" data-sortable="true">#</th>
+                        <th data-field="empresa_id" data-visible="false"></th>                        
+                        <th data-field="evaluacion_id" data-visible="true"></th>
+                        <th data-field="perfil_id" data-visible="true"></th>                        
+                        <th data-field="participante_id" data-visible="true"></th>   
+                        {#<th data-field="personaRut" data-sortable="true">Rut</th>#}
+                        <th data-field="personaNombre" data-sortable="true">Nombre</th>                        
+                        <th data-field="perfilNombre" data-sortable="true">Perfil</th>                        
+                        {#<th data-field="personaId" data-visible="true">Superior</th>#}
+                        <th data-field="" data-visible="true">Estado</th>
+                        <th data-field="operate" data-formatter="operateFormatter" data-events="operateEvents">Opciones</th>
+                    </tr>
+                    </thead>
+                    
+                </table>
+                 
+                
+           </div>
+        </div>
+                        
+                        
+<!-- window evaluacion participante -->
+    <div class="modal fade" id="vtnParticipantes" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content modal-lg" >
+                <div class="modal-header bg-info">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Evaluando a: </h4>
+                </div>
+                <div class="modal-body" id="myModalPersonasBody" style="margin: 0px 0px 0px 0px;  padding: 0px 0px 0px 0px">
+                    <iframe id="frmParticipante" src="" frameborder="0"  ></iframe>
+                </div>
+                <div class="modal-footer">
+                    {#<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>#}
+                    <button id="btnAtras" type="button" class="btn btn-primary" onclick="frmSubmit('0')" style="display:none; float: left"><< Volver al paso 1</button>
+                    <button id="btnAtras2" type="button" class="btn btn-primary" onclick="frmSubmit('1')" style="display:none; float: left"><< Volver al paso 2</button>
+                    <button id="btnPaso1" type="button" class="btn btn-primary" onclick="frmSubmit('1')" style="display:block; float: right">Avanzar al paso 2 >> </button>
+                    <button id="btnPaso2" type="button" class="btn btn-primary" onclick="frmSubmit('2')" style="display:none; float: right">Avanzar al paso 3 >> </button>
+                    <button id="btnPaso3" type="button" class="btn btn-primary" onclick="frmSubmit('3')" style="display:none; float: right">Finalizar</button>
+                    
+                </div>
+            </div> <!-- /.modal-content -->
+        </div> <!-- /.modal-dialog -->
+    </div> <!-- /.modal -->
+    
+    
+        {#</div>          #}
+      {#</div>#}       
+    <!-- start: Delete Coupon Modal -->
+ {#   <div class="modal fade" id="vtnPersonaBorrar" tabindex="-1" role="dialog" aria-labelledby="vtnPersonaLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                     <h3 class="modal-title" id="myModaBorrarlLabel">Atencion!</h3>
+
+                </div>
+                <div class="modal-body" id="vtnPersonaBodyBorrar">
+                     <h4> Esta seguro de borrar?</h4>
+                     <input type="hidden" name="tbxPersonaId" id="tbxPersonaId">
+                </div>
+                <!--/modal-body-collapse -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="btnConfirmaBorrar" onclick="frmBorrar()">Si</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                </div>
+                <!--/modal-footer-collapse -->
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="vtnPersona" tabindex="-1" role="dialog" aria-labelledby="vtnPersonaLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content modal-lg">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="vtnPersonaLabel">Nueva Persona</h4>
+                </div>
+                <div class="modal-body" id="vtnPersonaBody">                
+                    {{ form_widget(form.id) }}
+                    {{ form_errors(form.id) }}
+                   
+                    <p>
+                        <label>Rut</label>
+                        {{ form_widget(form.personaRut) }} 
+                        {{ form_errors(form.personaRut) }}
+                    </p>
+                    <p>
+                       <label>Nombre</label>    
+                       {{ form_widget(form.personaNombre) }} 
+                       {{ form_errors(form.personaNombre) }}
+                    </p>
+                    <p>
+                       <label>Perfil</label>    
+                       {{ form_widget(form.perfilId) }} 
+                       {{ form_errors(form.perfilId) }}
+                    </p> 
+                    
+                    <p>
+                       <label>Superior</label>    
+                       {{ form_widget(form.personaId) }} 
+                       {{ form_errors(form.personaId) }}
+                    </p>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" >Guardar Persona</button>
+                </div>
+            </div> <!-- /.modal-content -->
+        </div> <!-- /.modal-dialog -->
+    </div> <!-- /.modal -->
+
+    </div>
+                       
+{{ form_rest(form) }}
+{{ form_end(form) }}#}
+
+</div>
+
+
+{#       </div>#}
+
+       
+
+{% endblock %}
+
+
+
+{% block javascript %}   
+
+    <script type="text/javascript">
+        
+        var id = 0,
+        getRows2 = function () {
+            var rows = [];
+
+            for (var i = 0; i < 0; i++) {
+                rows.push({
+                    xxx: '',
+                    xxx2: '',
+                });
+                id++;
+            }
+            return rows;
+        }
+    
+    
+        function personaNuevo() {
+            document.getElementById("dvPersona").style.display="block";
+            {#var parametro = {'empresaId': '1', 'clienteId':'1'};
+            var url = Routing.generate('personaRegistrar', parametro);
+                    
+            BootstrapDialog.show({
+                message: $('<div></div>').load(url),
+                animate: false,
+                cssClass: 'login-dialog',
+                buttons: [{
+                    label: 'Close the dialog',
+                    action: function(dialogRef){
+                        dialogRef.close();
+                    }
+                }]
+                
+            });#}
+        }
+        
+        function frmBorrar() {            
+            //var objPanelFiltroAno = document.querySelector("#panelFiltroAno");            
+            var personaId= document.getElementById("tbxPersonaId").value ;            
+            var url = Routing.generate('personaBorrar',{"personaId": personaId});
+                      
+            document.thisform.action=url
+            document.thisform.submit();            
+        }
+            
+       {# $("#mimodal").on('hidden.bs.modal', function () {
+            $(this).data('bs.modal', null);
+        });#}
+        var myBackup = $('#vtnParticipantes').clone();
+        $('#vtnParticipantes').on('hidden.bs.modal', function (e) {
+            
+                    //$(e.target).removeData('bs.modal');
+                    $(this).removeData('bs.modal');
+                    document.getElementById("btnAtras").style.display="none";
+                    document.getElementById("btnAtras2").style.display="none";
+                    document.getElementById("btnPaso2").style.display="none";
+                    document.getElementById("btnPaso2").style.display="none";
+                    document.getElementById("btnPaso1").style.display="block";
+                    //alert("aca");
+                     //$(this).data('bs.modal', null);
+                   /* $('#vtnParticipantes').modal('hide').remove();
+                    var myClone = myBackup.clone();*/
+                    //$(this).removeData('bs.modal');
+                    //$(this).find('form')[0].reset();
+                    //$('body').append(myClone); 
+                    $(this).find('iframe').html("");
+                    $(this).find('iframe').attr("src", "");
+                    // $('#vtnParticipantes').removeData();
+                     //$("#vtnParticipantes").remove();
+                     //   $('bs.modal-backdrop').remove();
+
+                  })
+                  
+        function operateFormatter(value, row, index) {
+            return [
+                '<button id="btnEvaluacionParticipante" name="btnEvaluacionParticipante" type="button" class="evaluar btn btn-primary btn-xs">Evaluar</button>&nbsp;'
+            ].join('');
+        }
+
+        window.operateEvents = {
+            'click .evaluar': function (e, value, row, index) {
+                 evaluacionParticipante(row.evaluacion_id, row.participante_id, row.perfil_id, row.personaNombre, row.perfilNombre);
+            }
+        };
+    
+    
+    function evaluacionParticipante(evaluacionId, participanteId, perfilId, personaNombre, perfilNombre) {
+        alert("aca");
+        var parametro = {'evaluacionId':evaluacionId, 'participanteId':participanteId, 'perfilId': perfilId};
+        var url = Routing.generate('evaluacionParticipanteEvaluar', parametro);
+        //var url = Routing.generate('evaluacionPreguntaCompetencia', parametro);
+        //alert(url);
+        //document.location.href=url;        
+        //$('#myModalPersonas').val('');
+        {#$('#winParticipantes').find('.modal-body #myModalPersonasProgres').attr("style", "display:block");#}
+        //$("#myModalPersonas iframe").attr({'src':''});
+        //$("#vtnParticipantes").html('loading....');
+        //$(".modal-body1").html("Where did he go?!?!?!");
+        
+        $("#vtnParticipantes").find('.modal-title').text('Evaluando a: ' + personaNombre + "  [" + perfilNombre + "]");
+        $("#vtnParticipantes iframe").attr({'src':url,
+                           'height': 450,
+                           'width': '100%'});
+        $("#vtnParticipantes").modal("hide");    
+        $("#vtnParticipantes").modal("show");    
+
+    }
+    //document.getElementById('frmParticipante').contentWindow.laFuncion();
+    
+    function frmSubmit(accion) {
+
+        switch (accion) {  
+            case "0":  //Evaluacion de competencias y conocimientos
+                document.getElementById("btnAtras").style.display="none";
+                document.getElementById("btnPaso2").style.display="none";
+                document.getElementById("btnPaso1").style.display="block";                
+                document.getElementById('frmParticipante').contentWindow.frmSubmit("0");
+                break; 
+            case "1": //Evaluacion de preguntas de competencias                             
+                document.getElementById("btnPaso1").style.display="none";
+                document.getElementById("btnAtras2").style.display="none";
+                document.getElementById("btnPaso3").style.display="none";
+                document.getElementById("btnAtras").style.display="block";
+                document.getElementById("btnPaso2").style.display="block";
+                document.getElementById('frmParticipante').contentWindow.frmSubmit("1");
+                break;
+            case "2": //Evaluacion de preugntas de conocomiento
+                document.getElementById("btnPaso1").style.display="none";
+                document.getElementById("btnPaso2").style.display="none";
+                document.getElementById("btnAtras").style.display="none";
+                document.getElementById("btnPaso3").style.display="block";                
+                document.getElementById("btnAtras2").style.display="block";
+                document.getElementById('frmParticipante').contentWindow.frmSubmit("3");
+                break;
+            case "3": //Finalizar evaluacion
+                document.getElementById("btnPaso1").style.display="none";
+                document.getElementById("btnPaso2").style.display="none";
+                document.getElementById("btnPaso3").style.display="none";                    
+                document.getElementById('frmParticipante').contentWindow.frmSubmit("3");
+                break;
+            
+        }
+        
+    }
+        
+    
+           
+    </script>
+{% endblock %}
+

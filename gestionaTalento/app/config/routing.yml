@@ -1,0 +1,16 @@
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+    
+gt_sistema:
+    resource: "@GtSistemaBundle/Resources/config/routing.yml"
+    prefix:   /
+    options: 
+        expose: true
+        
+_user_bundle:
+    resource: "@UserBundle/Resources/config/routing.yml"
+    
+#app:
+#    resource: "@AppBundle/Controller/"
+#    type:     annotation
+    

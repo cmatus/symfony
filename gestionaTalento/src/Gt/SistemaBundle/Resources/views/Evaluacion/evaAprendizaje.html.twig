@@ -1,0 +1,220 @@
+{% extends 'GtSistemaBundle::basePop.html.twig' %}
+{% block title %} Gestionatalento {% endblock %}
+{#{% block dondeEstoy %}Empresa Cambiar{% endblock %}#}
+
+{% block body %}
+    {#{{ form_start(form) }}#}
+{#     onsubmit="return onSubmit()" action="#"#}
+    <form {{ form_enctype(form) }} method="POST" action="#">
+        
+        {{ form_errors(form) }}
+                  
+        
+               
+        <div class="page-header" style="margin-top: 2px; margin-bottom: 2px">
+            <h4 style="margin-top: 2px;  margin-bottom: 2px">{{personaNombre}}<br><small>{{perfilNombre}}</small></h4>
+        </div>
+        
+        <div class="page-header" style="margin-top: 2px; margin-bottom: 2px">
+            <h4>{{conocimientoNombre}} <br><small>{{conocimientoDefinicion}}</small></h4>
+        </div>
+        
+       {# <h3>{{conocimientoNombre}}</h3>
+        <h4>{{conocimientoDefinicion}}</h4>#}
+        
+        <div style="margin-top: 10px; margin-bottom: 10px">
+            Seleccione una evaluacion para cada pregunta:<br>
+            [<b>1</b>=bajo lo esperado]
+            [<b>2</b>=proximo a lo esperado]
+            [<b>3</b>=desempeño esperado] 
+            [<b>4</b>=sobre lo esperado]            
+            [<b>n/o</b>=no observado]
+        </div>
+                
+        <table  data-classes="table table-condensed" data-toggle="table" data-height="200" >
+            {#{% for det1 in form.evaluacionPreguntas %}#}
+
+                <thead class="bg-info">                                 
+                    <tr>
+                        <td><i>Pregunta evaluacion conocimiento</i></td>
+                        <td><b>1</b></td>
+                        <td><b>2</b></td>
+                        <td><b>3</b></td>
+                        <td><b>4</b></td>
+                        <td><b>n/o</b></td>
+                    </tr>
+                </thead>
+                <tbody>
+                
+                {% set i = 0 %}
+                {% for det in form.evaluacionAprendizajes %}                    
+                    <tr>                        
+                        <td>{{ aprendizajeEntity[i].aprendizajeNombre}} {{ form_widget(det.aprendizajeId) }} </td>
+                        <td>{{ form_widget(det.evaluacionAprendizajeRespuesta[0]) }}</td>
+                        <td>{{ form_widget(det.evaluacionAprendizajeRespuesta[1]) }}</td>
+                        <td>{{ form_widget(det.evaluacionAprendizajeRespuesta[2]) }}</td>                        
+                        <td>{{ form_widget(det.evaluacionAprendizajeRespuesta[3]) }}</td>
+                        <td>{{ form_widget(det.evaluacionAprendizajeRespuesta[4]) }}</td>
+                    </tr>
+                    {% set i = i + 1 %}
+                {% endfor %}
+                                                            
+                </tbody>
+
+            {#{% endfor %}#}
+
+        </table>                                   
+                                        
+        <nav style="float:right" >
+            <ul class="pagination">
+              <li>
+                <a href="#" aria-label="Previous" onclick="inicio(0)">
+                  <span aria-hidden="true">Inicio</span>
+                </a>
+              </li>
+                {% set i = 0 %}                
+                {% set paginaActiva = 0 %}
+                {% for row in conocimientoData  %}
+                    {% set active = "" %}
+                    {% set i = i + 1 %}
+                    {% if conocimientoId == row.conocimientoId %}
+                        {% set paginaActiva = i %}
+                        {% set active = "class=active" %}
+                    {% endif %}    
+                    <li {{ active }} ><a href="#" onclick="conocimientoEvaluar({{row.conocimientoId}},{{i}})">{{ i }} </a></li>    
+                {% endfor %}                  
+              <li>
+                {% if paginaActiva < conocimientoTotal %}  
+                    <a href="#" aria-label="Next" onclick="grabar(0)">
+                      <span aria-hidden="true">Grabar Respuestas y Avanzar &raquo;</span>
+                    </a>
+                {% else %}
+                    <a href="#" aria-label="Next" onclick="grabar(1)">
+                      <span aria-hidden="true">Grabar Respuestas y Finalizar &raquo;</span>
+                    </a>
+                {% endif %}    
+              </li>
+            </ul>
+          </nav>
+                                                
+             {% for flashMessage in app.session.flashbag.get('notice') %}
+            {#        <div class="flash-notice">                              
+                        <div class="alert alert-success alert-dismissible" role="alert" >
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ><span aria-hidden="true">&times;</span></button>
+                            { flashMessage }, ahora puedes continuar ingresando información adicional
+                            {% set guardado=true %}
+                            </div>
+                        </div>#}
+            {% endfor %}                                                  
+            
+    {{ form_rest(form) }}
+    
+    <input type="hidden" name="conocimientoNumero" id="conocimientoNumero" value="{{conocimientoNumero}}">
+    
+    </form>
+    {# <button type="button" class="btn btn-primary" onclick="frmSubmit('0')" ><< Atras </button>
+     <button type="button" class="btn btn-primary" onclick="frmSubmit('3')" >Paso 2 de 3 >> Siguiente</button>#}
+
+
+  {#  {{ form_rest(form) }}
+    {{ form_end(form) }}#}
+
+{% endblock %}
+
+
+{% block javascript %}   
+
+    <script type="text/javascript">
+
+        function conocimientoEvaluar(conocimientoId, conocimientoNumero) {
+            window.parent.progress("winEvaluacionAprendizaje");
+            //var evaluacionId = "{ evaluacionId }";
+            var participanteId = "{{ participanteId }}";
+            //var perfilId = "{ perfilId }";
+            
+                var parametro = {
+                        'participanteId': participanteId,                        
+                        'conocimientoId': conocimientoId,
+                        'conocimientoNumero':conocimientoNumero};
+
+                var url = Routing.generate('evaluacionAprendizaje', parametro);
+                
+                //var form = $('form')[0];
+                //alert(url);
+                //form.action = url;
+                //form.submit();
+                document.location.href=url;
+                    
+        }
+        
+        function grabar(finalizar) {
+            var form = $('form')[0];
+            if (form.checkValidity()) {
+                window.parent.progress("winEvaluacionAprendizaje");
+                
+                console.log('valid');
+
+                var participanteId = "{{ participanteId }}";  
+                var conocimientoNumero=document.getElementById("conocimientoNumero").value;
+                //conocimientoNumero++;
+                //document.getElementById("conocimientoNumero").value=conocimientoNumero;
+                //form.action = url;
+                var parametro = {
+                        'participanteId': participanteId,                                                
+                        'conocimientoNumero':conocimientoNumero};
+
+                var url = Routing.generate('evaluacionAprendizaje', parametro);
+                form.action = url;
+                form.submit();
+                //window.parent.refreshTabla();
+            } else {
+                alert("Debe completar las respuestas para grabar")
+            }
+        }
+        
+        function inicio() {
+            var participanteId = "{{ participanteId }}";
+            var parametro = {'participanteId':participanteId};
+            var url=Routing.generate('evaluacionCcResumen', parametro);
+            document.location.href=url;
+            
+        }
+        $(document).ready(function() {
+            
+        });
+            
+        function frmSubmit(accion) {
+
+            
+            var participanteId = "{{ participanteId }}";
+            
+                        
+            switch (accion) {
+                case "0":
+                    var parametro = {'participanteId': participanteId};
+
+                    var url = Routing.generate('evaluacionParticipanteEvaluar', parametro);
+                    //evaluacionParticipanteEvaluar/{evaluacionId}/{participanteId}/{perfilId}
+                    //document.thisform.method = "GET";
+                    document.location.href = url;
+                    //document.thisform.submit();
+                    break;
+                case "3":
+
+
+                    var parametro = {'evaluacionId': evaluacionId,
+                        'participanteId': participanteId,
+                        'perfilId': perfilId,
+                        'preguntaTipoId': preguntaTipoId,
+                        'preguntaClasificacionId': preguntaClasificacionId};
+
+                    var url = Routing.generate('evaluacionAprendizaje', parametro);
+                    document.thisform.action = url;
+                    document.thisform.submit();
+                    break;
+            }
+
+        }
+
+    </script>
+{% endblock %}

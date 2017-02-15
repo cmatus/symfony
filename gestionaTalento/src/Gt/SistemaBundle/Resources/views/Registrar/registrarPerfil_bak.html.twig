@@ -1,0 +1,170 @@
+{% extends 'GtSistemaBundle::base.html.twig' %}
+{% block title %} Gestionatalento {% endblock %}
+{#{% block dondeEstoy %}Empresa Cambiar{% endblock %}#}
+
+{% block body %}
+
+    <center>
+    <div class="center-block">
+        <div class="panel panel-primary" style="width:700px">
+            <div class="panel-heading">
+                <h3 class="panel-title">Perfiles</h3>
+            </div>
+            <div class="panel-body" >
+
+                <p>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                        Nuevo Perfil
+                    </button>
+
+                    <a href="http://twitter.github.io/bootstrap/" class="btn bootpopup" title="This is title" target="#myModal">Open modal</a>
+
+                    <a id="ver-factura" href="#" data-target="#myModal2" data-toggle="modal">
+                        Ver factura
+                    </a>
+
+                </p>    
+                <p>
+                <table class="table table-bordered">
+                    <tr>
+                        <th>#</td>
+                        <th>Rubro</th>
+                        <th>Nombre Perfil</th>
+                        <th>Definicion</th>
+                        <th>Opciones</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>Servicios</td>
+                        <td>Analista Programador</td>
+                        <td>Texto...................</td>
+                        <td>
+                            <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal">Ver Detalle</button>
+                            <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal">Ver Preguntas Evaluacion</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Servicios</td>
+                        <td>Secretaria</td>
+                        <td>Texto...................</td>
+                        <td>
+                            <button type="button" class="btn btn-primary btn-xs">Ver Detalle</button>
+                            <button type="button" class="btn btn-primary btn-xs">Ver Preguntas Evaluacion</button>
+                        </td>
+                    </tr>
+
+                </table>
+                </p>
+            </div>    
+        </div>
+    </div>
+    </center>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Modal title</h4>
+                </div>
+                <div class="modal-body" id="myModal2Body">                
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div> <!-- /.modal-content -->
+        </div> <!-- /.modal-dialog -->
+    </div> <!-- /.modal -->
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content modal-lg">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Perfil</h4>
+                </div>
+                <div class="modal-body">                
+
+
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary">Grabar cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
+
+
+
+{% block javascript %}   
+
+    <script>
+        {#        $('#myModal').on('hidden.bs.modal', function (e) {
+                    alert("aca");
+                  })
+        #}
+
+            $('#myModal').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget) // Button that triggered the modal
+                var recipient = button.data('whatever') // Extract info from data-* attributes
+                // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                var modal = $(this)
+                modal.find('.modal-title').text('xxxx')
+                modal.find('.modal-body #tbxPerfilNombre').val("xxx")
+            })
+
+
+            $(document).ready(function() {
+                // Asociar un evento al botón que muestra la ventana modal
+                $('#ver-factura').click(function() {
+                    origen = "1";
+                    var parametro = {'origen': origen};
+                    //var url = Routing.generate('maestro_conceptocontable_mantenedorDHX',parametro);  
+                    var url = Routing.generate('registrarPerfilDatos');
+                    alert(url);
+                    html = "<div class='input-group'><span class='input-group-addon' id='basic-addon2'>1</span><input type='text' class='form-control' placeholder='Ingrese Conocimiento' aria-describedby='basic-addon2'></div>";
+                    $.ajax({
+                        // la URL para la petición
+
+                        url: url,
+                        // la información a enviar
+                        //data : { 'fac' : <?php echo $dato['factura']; ?> },
+                        // especifica si será una petición POST o GET
+                        type: 'post',
+                        // el tipo de información que se espera de respuesta
+                        dataType: 'html',
+                        // código a ejecutar si la petición es satisfactoria;
+
+                        success: function(respuesta) {
+                            //alert(respuesta);
+                            //$('#myModal2').html("<table><tr><td>Se ejecuto</td></tr></table>");
+                            $('#myModal2Body').html(respuesta);
+                        },
+                        // código a ejecutar si la petición falla;
+                        error: function(xhr, status) {
+                            alert('Disculpe, existió un problema');
+                        },
+                    });
+                });
+            });
+
+
+
+
+    </script>
+{% endblock %}
+

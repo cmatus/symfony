@@ -1,0 +1,120 @@
+{% extends 'GtSistemaBundle::basePop.html.twig' %}
+{% block title %} Gestionatalento {% endblock %}
+{#{% block dondeEstoy %}Empresa Cambiar{% endblock %}#}
+
+{% block body %}
+    {{ form_start(form) }}
+    <div style="margin: 0px 10px 0px 10px">
+
+        <div style="margin-top: 10px; margin-bottom: 10px"><b>Seleccione una evaluacion para cada pregunta [1=menor valor] [4=mayor valor] [n/a=no aplica]</b></div>
+        <table data-classes="table table-condensed" data-toggle="table" >    
+            {% for det1 in form.evaluacionCompetencias %}
+
+
+                <thead class="bg-info">
+                    <tr>
+                        <td colspan="6"><b>Competencia:</b> {{ form_widget(det1.competenciaId) }} {{ form_widget(det1.competenciaNombre) }}</td>
+                    </tr> 
+                    <tr>
+                        <td ><i>Resumen competencia</i></td>
+                        <td><b>1</b></td>
+                        <td><b>2</b></td>
+                        <td><b>3</b></td>
+                        <td><b>4</b></td>
+                        <td><b>n/a</b></td>
+                    </tr>
+                </thead>
+                <tbody>
+
+                  {#  <tr>
+                        <td style="color: #D3D3D3"></td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                        <td>n/a</td>
+                    </tr>#}
+
+                    {% for det in det1.evaluacionPreguntas %}
+                        <tr>                        
+                            <td>{{ form_widget(det.preguntaId) }} {{ form_widget(det.preguntaNombre) }}</td>
+                            <td>{{ form_widget(det.evaluacionPreguntaRespuesta[0]) }}</td>
+                            <td>{{ form_widget(det.evaluacionPreguntaRespuesta[1]) }}</td>
+                            <td>{{ form_widget(det.evaluacionPreguntaRespuesta[2]) }}</td>                        
+                            <td>{{ form_widget(det.evaluacionPreguntaRespuesta[3]) }}</td>
+                            <td>{{ form_widget(det.evaluacionPreguntaRespuesta[4]) }}</td>
+                        </tr>
+                    {% endfor %}
+
+                </tbody>
+
+
+            {% endfor %}
+
+        </table>                                   
+
+
+
+
+
+
+
+    </div>
+    {# <button type="button" class="btn btn-primary" onclick="frmSubmit('0')" ><< Atras </button>
+     <button type="button" class="btn btn-primary" onclick="frmSubmit('3')" >Paso 2 de 3 >> Siguiente</button>#}
+
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+
+{% endblock %}
+
+
+{% block javascript %}   
+
+    <script type="text/javascript">
+
+        function frmSubmit(accion) {
+
+            var evaluacionId = "{{ evaluacionId }}";
+            var participanteId = "{{ participanteId }}";
+            var perfilId = "{{ perfilId }}";
+            var preguntaTipoId = "{{ perfilId }}";
+            var preguntaClasificacionId = "{{ perfilId }}";
+
+            switch (accion) {
+                case "0":
+                    var parametro = {'evaluacionId': evaluacionId,
+                        'participanteId': participanteId,
+                        'perfilId': perfilId};
+
+                    var url = Routing.generate('evaluacionParticipanteEvaluar', parametro);
+                    //evaluacionParticipanteEvaluar/{evaluacionId}/{participanteId}/{perfilId}
+                    //document.thisform.method = "GET";
+                    document.location.href = url;
+                    //document.thisform.submit();
+                    break;
+                case "3":
+
+
+                    var parametro = {'evaluacionId': evaluacionId,
+                        'participanteId': participanteId,
+                        'perfilId': perfilId,
+                        'preguntaTipoId': preguntaTipoId,
+                        'preguntaClasificacionId': preguntaClasificacionId};
+
+                    var url = Routing.generate('evaluacionPreguntaCompetencia', parametro);
+                    document.thisform.action = url;
+                    document.thisform.submit();
+                    break;
+            }
+
+
+
+        }
+
+
+
+
+    </script>
+{% endblock %}

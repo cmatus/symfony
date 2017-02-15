@@ -1,0 +1,559 @@
+{% extends 'GtSistemaBundle::basePop.html.twig' %}
+{% block title %} Gestionatalento {% endblock %}
+{#{% block dondeEstoy %}Empresa Cambiar{% endblock %}#}
+
+{% block body %}
+
+
+
+  <div class="container-fluid">
+{#    <div class="center-block" >
+        <div class="panel panel-primary" >
+            <div class="panel-heading">
+                <h3 class="panel-title">Perfiles</h3>
+            </div>
+            <div class="panel-body" >#}
+                                    
+                <div id="custom-toolbar">
+                    {#<button id='btnPerfil' type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                        Nuevo Perfil
+                    </button>#}
+                    
+                    <button id='btnPersona' type="button" class="btn btn-sm btn-primary " onclick="formAccion(1,'0')">
+                        Nuevo Perfil
+                    </button>
+                </div>                
+                
+                {{path('perfilTabla')}}
+                
+                <table id='tblPerfil' data-classes="table table-condensed" 
+                        data-toggle="table" 
+                        data-cache="false" 
+                        data-height="500" 
+                        data-striped="true"  
+                        data-pagination="true"
+                        data-search="true" 
+                        data-show-refresh="true"
+                        data-toolbar="#custom-toolbar"
+                        data-show-export="true" exportTypes="['excel', 'txt', 'csv']"                       
+                        data-url="{{path('maestroTabla', {'maeTipoId': maeTipoId})}}">     
+                    <thead>
+                    <tr>
+                        <th data-field="id" data-sortable="true" data-visible="false">#</th>
+                        <th data-formatter="opciones" data-events="operateEvents">Opciones</th>
+                        <th data-field="perfilNombre" data-sortable="true">Nombre del Cargo</th>
+                        <th data-field="perfilObjetivo"data-width="600">Objetivo</th>                                   
+                    </tr>
+                    </thead>
+                    {#<tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>EMPRENDIMIENTO</td>                        
+                        <td>Capacidad de mantenerse en constante búsqueda de oportunidades para crear soluciones, aceptando retos y enfrentándose a la incertidumbre. Implica idear soluciones nuevas y diferentes para resolver problemas o situaciones complejas, en un contexto cambiante. Supone confiar en si mismo y motivarse por los logros y las personas, conduciendo a otros y colaborando con ellos. Requiere la habilidad de encontrar apoyo entre quienes forma un equipo. Significa desarollar la habilidad para ser persistentes y resistentes al fracaso y enfrentar los retos de manera positiva, pero realista</td>                        
+                        <td></td>
+                        <td>
+                            <button type="button" class="btn btn-primary btn-xs">Modificar</button>
+                            <button type="button" class="btn btn-primary btn-xs">Borrar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>COMUNICACION</td>
+                        <td>Capacidad de transmitir mensajes frente a una audencia, expresando ideas, tanto en forma oral como escrita, de un modo claro, preciso y asertivo. Comprender la riqueza de las distintas opiniones y valorar el discurso con fundamento.</td>
+                        <td>Texto...................</td>
+                        <td>
+                            <button type="button" class="btn btn-primary btn-xs">Modificar</button>
+                            <button type="button" class="btn btn-primary btn-xs">Borrar</button>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3</td>
+                        <td>CAPACIDAD DE GESTION</td>
+                        <td>Administrar eficazmente los recursos atendiendo a los costos, beneficios y calidad, para el cumplimiento de objetivos y la mejora de resultados de su área y la Universidad.</td>
+                        <td>Texto...................</td>
+                        <td>
+                            <button type="button" class="btn btn-primary btn-xs">Modificar</button>
+                            <button type="button" class="btn btn-primary btn-xs">Borrar</button>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4</td>
+                        <td>COLABORACION EN REDES/TRABAJO EN EQUIPO</td>
+                        <td>Establecer y mantener relaciones de trabajo con las personas de las distintas áreas, con alto grado de colaboración, respeto, confianza y toleracia en pos de la Organización.</td>
+                        <td>Texto...................</td>
+                        <td>
+                            <button type="button" class="btn btn-primary btn-xs">Modificar</button>
+                            <button type="button" class="btn btn-primary btn-xs">Borrar</button>                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5</td>
+                        <td>EMPATIA</td>
+                        <td>Capacidad de percibir los problemas, necesidades, preocupaciones y sentimientos de otros, demostrando comprensión e interés genuinos.</td>
+                        <td>Texto...................</td>
+                        <td>
+                            <button type="button" class="btn btn-primary btn-xs">Modificar</button>
+                            <button type="button" class="btn btn-primary btn-xs">Borrar</button>                        </td>
+                    </tr>
+                    
+                    
+                    </tbody>#}
+                </table>
+                
+            {#</div>    
+        </div>#}
+   {# </div>#}
+   
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Modal title</h4>
+                </div>
+                <div class="modal-body" id="myModal2Body">                
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div> <!-- /.modal-content -->
+        </div> <!-- /.modal-dialog -->
+    </div> <!-- /.modal -->
+
+
+    <!-- start: Delete Coupon Modal -->
+    <div class="modal fade" id="myModalBorrar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                     <h3 class="modal-title" id="myModaBorrarlLabel">Atencion!</h3>
+
+                </div>
+                <div class="modal-body" id="myModalBodyBorrar">
+                     <h4> Esta seguro de borrar?</h4>
+                     <input type="hidden" name="tbxIdPerfil" id="tbxIdPerfil">
+                </div>
+                <!--/modal-body-collapse -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="btnConfirmaBorrar" onclick="frmBorrar()">Si</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                </div>
+                <!--/modal-footer-collapse -->
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content modal-lg">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Perfil</h4>
+                </div>
+                <div class="modal-body" id="myModalBody">                
+                    
+                            
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="frmSubmit()"  >Guardar Perfil</button>
+                </div>
+            </div> <!-- /.modal-content -->
+        </div> <!-- /.modal-dialog -->
+    </div> <!-- /.modal -->
+</div>
+
+
+
+
+</form>
+
+{% endblock %}
+
+
+
+{% block javascript %}   
+
+    <script type="text/javascript">
+        
+        var id = 0,
+    getRows2 = function () {
+        var rows = [];
+
+        for (var i = 0; i < 0; i++) {
+            rows.push({
+                xxx: '',
+                xxx2: '',
+            });
+            id++;
+        }
+        return rows;
+    }
+    
+    
+          function frmSubmit() {
+            //alert(JSON.stringify($("#tableActividadClave").bootstrapTable('getSelections')));
+            //var preguntaTipoId=document.getElementById("thisform_preguntaTipoId").value;
+            var data = JSON.stringify($("#tblCompetencia").bootstrapTable('getSelections')) 
+            var json = JSON.parse(data);
+            var arr = [];
+            var ids="";
+            for(var row in json){               
+                //alert(json[row]["id"]);
+                ids+=json[row]["id"]+",";
+            }
+            document.getElementById("tbxCompetenciaIds").value=ids;
+
+            var data = JSON.stringify($("#tblConocimiento").bootstrapTable('getSelections')) 
+            var json = JSON.parse(data);
+            var arr = [];
+            var ids="";
+            for(var row in json){               
+                //alert(json[row]["id"]);
+                ids+=json[row]["id"]+",";
+            }
+            document.getElementById("tbxConocimientoIds").value=ids;                                    
+            document.thisform.submit();
+        }
+        
+        
+        
+                
+        function frmBorrar() {            
+            //var objPanelFiltroAno = document.querySelector("#panelFiltroAno");            
+            var idPerfil= document.getElementById("tbxIdPerfil").value ;                        
+            url = Routing.generate('perfilRegistrar');            
+            document.thisform.action=url
+            document.thisform.submit();            
+        }
+            
+        
+        function operateFormatter(value, row, index) {
+            return [
+                '<button id="btnModificar" name="btnModificar" type="button" class="modificar btn btn-primary btn-xs">Modificar</button>&nbsp;',
+                '<button id="btnBorrar" name="btnBorrar" type="button" class="borrar btn btn-primary btn-xs">Borrar</button>&nbsp;',
+                '<br><button id="btnActividadClave" name="btnActividadClave" type="button" class="actividad btn btn-info btn-xs">Actvidades Claves</button>',
+                
+            ].join('');
+        }
+
+        function opciones(value, row, index) {
+            return [
+                '<div class="btn-group" role="group"><button type="button" class="modificar btn btn-xs btn-default" ><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>',
+                '<button type="button" class="borrar btn btn-xs btn-default" ><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>',
+                '</div>'
+            ].join('');
+            
+            //'<button id="btnModificar" name="btnModificar" type="button" class="btn btn-link btn-xs">Modificar</button>',
+            //'<button id="btnBorrar" name="btnBorrar" type="button" class="btn btn-link btn-xs">Borrar</button>&nbsp;',
+        }  
+        
+    window.operateEvents = {
+        'click .modificar': function (e, value, row, index) {
+            formAccion(1, row.id);
+            //alert('You click modificar icon, row: ' + JSON.stringify(row));
+            //console.log(value, row, index);
+           {# $('#myModal').data('registro', {id: row.id, 
+                                            perfilNombre: row.perfilNombre, 
+                                            perfilDefinicion: row.perfilDefinicion }).modal('show');#}
+        },
+        'click .borrar': function (e, value, row, index) {
+            $('#myModalBorrar').data('id', row.id).modal('show');
+            //alert('You click borrar icon, row: ' + JSON.stringify(row));
+            //console.log(value, row, index);
+        },
+        'click .remove': function (e, value, row, index) {
+            alert('You click remove icon, row: ' + JSON.stringify(row));
+            console.log(value, row, index);
+        }
+    };
+    
+    
+    
+    var wins;
+        var wins2;
+        var winId;
+        function formAccion(accionId, maeRegistroId) {                                    
+            
+            objParametros= [{
+                            'maeTipoId': '{{maeTipoId}}',
+                            'maeNombre': 'persona',                                    
+                            'winParent': '{{winParent}}',   
+                            'entityId':maeRegistroId                           
+                            }];
+                                                                    
+            var jsnParametros = JSON.stringify(objParametros);
+            
+            var parametros={'maeParametros': jsnParametros};
+                    
+            switch (accionId) {
+                case 1:
+                    var url=Routing.generate('maestroRegistrar', parametros);
+                    
+                    wins2 = new dhtmlXWindows();
+                    skin="dhx_skyblue";
+                    wins2.setSkin(skin);
+                    
+                    winId="winPerfilRegistrar";
+                    
+                    wins2.createWindow(winId, 1, 1, 780, 560);
+                    wins2.window(winId).setText("<h5>Perfil</h5>");
+            
+                    wins2.window(winId).setModal(true);
+                    wins2.window(winId).button("minmax").disable();                   
+                    wins2.window(winId).centerOnScreen();                   
+                    wins2.window(winId).progressOn();
+                   
+                    wins2.window(winId).setIconCss("without_icon");
+
+                    //var jsnParametros = JSON.stringify(maeParametros);
+                    //var urlParametros={'maeTipoId':maeTipoId, 'winParent': winParent, 'maeParametros': maeParametros};
+                    //var url = Routing.generate('maestro', urlParametros);
+                    wins2.window(winId).attachURL(url);
+
+                    wins2.window(winId).attachEvent("onContentLoaded", function(id){
+                       //alert(id.id);
+                       id.progressOff();        
+                       var ifr = id.getFrame();
+                       ifr.contentWindow.wins=wins;
+                       //ifr.contentWindow.winParent=winParent;
+                       //alert(ifr.contentWindow.winParent);
+                    });     
+
+                    //document.location.href=url;
+                    break
+                case 2:
+                    window.parent.winProgress(wins,"winPerfil", 1); 
+                    var url=Routing.generate('maestroBorrar', parametros);
+                    var form = $('form')[0];                   
+                    
+                    form.action=url;
+                    form.submit();
+                    break;
+            }
+        }
+        
+        function cerrar() {
+            winId="winPerfilRegistrar";
+            wins2.window(winId).close();
+        }
+        
+        function progress() {
+            winId="winPerfilRegistrar";
+            wins2.window(winId).progressOn();
+        }
+        
+        function refreshTabla() {
+            //alert("aca");
+            var $table = $('#tblPerfil');
+            $table.bootstrapTable('refresh');
+        }
+        
+        
+        
+    
+    
+        {#        $('#myModal').on('hidden.bs.modal', function (e) {
+                    alert("aca");
+                  })
+        #}
+
+        $('#myModal').on('show.bs.modal', function(event) {
+            //var button = $(event.relatedTarget) // Button that triggered the modal
+            //var recipient = button.data('whatever') // Extract info from data-* attributes
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            var modal = $(this)
+            //modal.find('.modal-title').text('xxxx')
+            var perfilId=$('#myModal').data("registro").id;
+            var perfilNombre=$('#myModal').data("registro").perfilNombre;
+            var perfilDefinicion=$('#myModal').data("registro").perfilDefinicion;
+                        
+            if ($('#myModal').data("registro").id>0) {                    
+                var parametro = {'perfilId':perfilId};
+                modal.find('.modal-body #thisform_id').val(perfilId);
+                modal.find('.modal-body #thisform_perfilNombre').val(perfilNombre);
+                modal.find('.modal-body #thisform_perfilDefinicion').val(perfilDefinicion);
+            } else {    
+                var parametro = {'perfilId':'0'};
+                modal.find('.modal-body #thisform_id').val("");
+                modal.find('.modal-body #thisform_perfilNombre').val("");
+                modal.find('.modal-body #thisform_perfilDefinicion').val("");
+            }
+                //Buscamos las actividades claves asociadas a la competencia
+                
+                $('#tblCompetencia').bootstrapTable('destroy');
+                $('#tblCompetencia').bootstrapTable('showLoading'); 
+                var url = Routing.generate('perfilCompetenciaTabla', parametro);
+                alert(url);
+                $.ajax({
+                    url: url,                        
+                    type: 'post',                        
+                    dataType: 'json',
+                    success: function(respuesta) {
+                        $('#tblCompetencia').bootstrapTable('destroy');                            
+                        $('#tblCompetencia').bootstrapTable({data: respuesta});
+                    },
+                    // código a ejecutar si la petición falla;
+                    error: function(xhr, status) {
+                        alert('Disculpe, existió un problema');
+                    },
+                });
+                
+                $('#tblConocimiento').bootstrapTable('destroy');
+                $('#tblConocimiento').bootstrapTable('showLoading'); 
+                var url = Routing.generate('perfilConocimientoTabla', parametro);
+                alert(url);
+                $.ajax({
+                    url: url,                        
+                    type: 'post',                        
+                    dataType: 'json',
+                    success: function(respuesta) {
+                        $('#tblConocimiento').bootstrapTable('destroy');                            
+                        $('#tblConocimiento').bootstrapTable({data: respuesta});
+                    },
+                    // código a ejecutar si la petición falla;
+                    error: function(xhr, status) {
+                        alert('Disculpe, existió un problema');
+                    },
+                });
+                
+                
+            
+        });
+
+        $('#myModalBorrar').on('show.bs.modal', function(event) {
+            var modal = $(this)
+            modal.find('.modal-body #tbxIdPerfil').val($('#myModalBorrar').data("id"));
+        });
+        
+            $(document).ready(function() {
+                $('#btnPerfil').on('click', function() {
+                $('#myModal').data('registro', {id: 0});
+            });
+               
+                
+                {#$('#btnPerfil').on('click', function() {
+                    origen = "1";
+                    var parametro = {'origen': origen};
+                    //var url = Routing.generate('maestro_conceptocontable_mantenedorDHX',parametro);  
+                    var url = Routing.generate('perfilDatos');
+                    alert(url);
+                });#}
+                // Asociar un evento al botón que muestra la ventana modal
+                $('#btnPerfil2').on('click', function() {
+                    origen = "1";
+                    var parametro = {'origen': origen};
+                    //var url = Routing.generate('maestro_conceptocontable_mantenedorDHX',parametro);  
+                    var url = Routing.generate('perfilDatos');
+                    alert(url);
+                    html = "<div class='input-group'><span class='input-group-addon' id='basic-addon2'>1</span><input type='text' class='form-control' placeholder='Ingrese Conocimiento' aria-describedby='basic-addon2'></div>";
+                    $.ajax({
+                        // la URL para la petición
+
+                        url: url,
+                        // la información a enviar
+                        //data : { 'fac' : <?php echo $dato['factura']; ?> },
+                        // especifica si será una petición POST o GET
+                        type: 'post',
+                        // el tipo de información que se espera de respuesta
+                        dataType: 'html',
+                        // código a ejecutar si la petición es satisfactoria;
+
+                        success: function(respuesta) {
+                            //alert(respuesta);
+                            //$('#myModal2').html("<table><tr><td>Se ejecuto</td></tr></table>");
+                            $('#myModalBody').html(respuesta);
+                        },
+                        // código a ejecutar si la petición falla;
+                        error: function(xhr, status) {
+                            alert('Disculpe, existió un problema');
+                        },
+                    });
+                });
+            });
+
+
+   {# $('#tblPerfiles').dataTable( {       
+        "oLanguage":{"sSearch": "Buscar"}
+    });#}
+
+$.extend(true, $.fn.dataTable.defaults.oLanguage, {
+     
+    "sProcessing": "Processando...",
+    "sLengthMenu": "Mostrar _MENU_ registros",
+    "sZeroRecords": "Não foram encontrados resultados",
+    "sInfo":  "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+    "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros",
+    "sInfoFiltered": "(filtrado de _MAX_ registros no total)",
+    "sInfoPostFix": "",
+    "sSearch": "Buscar:",
+    "oPaginate": {
+        "sFirst": "Primeiro",
+        "sPrevious": "Anterior",
+        "sNext": "Seguinte",
+        "sLast": "Último",
+    }
+     
+});
+
+
+        $(document).ready(function() {
+            $('#tblPerfiles2').DataTable( {
+                "language": {
+                    "lengthMenu": "Display _MENU_ records per page",
+                    "zeroRecords": "Nothing found - sorry",
+                    "info": "Registros page _PAGE_ of _PAGES_",
+                    "infoEmpty": "No records available",
+                    "infoFiltered": "(filtered from _MAX_ total records)",
+                    "sSearch":"Buscar:",
+                    
+                }
+            } );
+        } );
+
+{#
+    $('.tblPerfiles').dataTable({
+                //"sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span12'i><'span12 center'p>>",
+                //"bJQueryUI": true,
+                //"sPaginationType": "full_numbers",
+                "sPaginationType": "bootstrap",
+                "oLanguage": {
+                "sProcessing":     "Procesando...",
+                "sLengthMenu":     "Mostrar _MENU_ registros",
+                "sZeroRecords":    "No se encontraron resultados",
+                "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix":    "",
+                "sSearch":         "Buscar:",
+                "sUrl":            "",
+                "sInfoThousands":  ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                "sFirst":    "Primero",
+                "sLast":     "Último",
+                "sNext":     "Siguiente",
+                "sPrevious": "Anterior"
+                },
+        "fnInfoCallback": null,
+                }
+            } );
+            #}
+            
+    </script>
+{% endblock %}
+

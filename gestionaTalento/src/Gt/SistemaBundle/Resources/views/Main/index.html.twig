@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="Content-Language" content="es"/> 
+        <title>{% block title %}gestionaTalento{% endblock %}</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+
+    </head>
+
+    <style>
+        .container {
+            width: 550px;
+            margin: 0 auto;            
+        }
+    </style>
+    <body>  
+        
+            <br/>       
+            <br/>
+            <br/>
+            <br/>
+
+            <img src="{{ asset('images/clientes/logo_gestionaTalento.png') }}" class="img-responsive center-block"  >
+
+            <br/>
+        <div class="text-center">
+            <button id='btnPregunta' type="button" class="btn btn-primary" onclick="clientes()">Acceso Clientes</button>
+            <button id='btnPregunta' type="button" class="btn btn-info">Acceso DEMO</button>
+            </center>
+        </div>
+
+        <script type="text/javascript">
+
+            function clientes() {
+                document.location.target = "_blank";
+                document.location.href = "{{ path("fos_user_security_login") }}";
+
+            }
+        </script>
+    </body>
+</html>
