@@ -24,3 +24,10 @@
 
  8. Generar controlador
     php app/console generate:controller
+
+138.197.7.205
+CREATE USER 'pablo'@'localhost' IDENTIFIED BY 'P4bl0_';
+GRANT ALL PRIVILEGES ON *.* TO 'pablo'@'localhost';    
+git clone https://github.com/PabMendez/Mantenedor1
+php app/console doctrine:database:create
+php app/console doctrine:schema:create
